@@ -1,11 +1,13 @@
-import { Button } from "@/components/atoms";
+import { Button, TextField } from "@/components/atoms";
 import { DataTable, IRows, Icolumns } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { getAllProducts } from "@/services";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 export function Productos() {
   const { data: products = [], isError, isLoading, isSuccess } = useQuery({ queryKey: ["getAllProducts"], queryFn: getAllProducts });
+  const [search, setSearch] = useState<string>("");
   const columns: Icolumns[] = [
     { value: "Codigo", nameKey: "id" },
     { value: "Nombre", nameKey: "name" },
@@ -15,7 +17,9 @@ export function Productos() {
     { nameKey: "settings", value: "" },
   ];
 
-  const rows: IRows[] = products?.map((product) => ({
+  const productsSearh = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()));
+
+  const rows: IRows[] = productsSearh?.map((product) => ({
     ...product,
     settings: (
       <button className="ml-5 ">
@@ -33,7 +37,8 @@ export function Productos() {
 
   return (
     <Layout>
-      <div className="flex items-center gap-2">
+      <div className="w-full flex flex-wrap gap-2">
+        <TextField value={search} placeholder="Buscar" onChange={(event) => setSearch(event.currentTarget.value)} />
         <Button>
           Agregar
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 aspect-square">

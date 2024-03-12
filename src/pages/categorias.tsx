@@ -3,9 +3,12 @@ import { DataTable, IRows, Icolumns } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { getAllCategories } from "@/services";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 export function Categorias() {
   const { data: categories = [], isError, isLoading, isSuccess } = useQuery({ queryKey: ["getAllCategories"], queryFn: getAllCategories });
+
+  const [search, setSearch] = useState<string>("");
 
   const columns: Icolumns[] = [
     { nameKey: "id", value: "Codigo" },
@@ -13,7 +16,9 @@ export function Categorias() {
     { nameKey: "settings", value: "" },
   ];
 
-  const rows: IRows[] = categories?.map((category) => ({
+  const categoriesSearh = categories.filter((category) => category.name.toLowerCase().includes(search.toLowerCase()));
+
+  const rows: IRows[] = categoriesSearh?.map((category) => ({
     ...category,
     settings: (
       <button className="ml-5 ">
@@ -31,8 +36,8 @@ export function Categorias() {
 
   return (
     <Layout>
-      <TextField placeholder="demo" />
-      <div className="flex items-center gap-2">
+      <div className="w-full flex flex-wrap gap-2">
+        <TextField value={search} placeholder="Buscar" onChange={(event) => setSearch(event.currentTarget.value)} />
         <Button>
           Agregar
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 aspect-square">
