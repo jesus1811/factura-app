@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export type TypeButton = "Alert" | "Normal";
+export type TypeButton = "Alert" | "Normal" | "Shop";
 export interface IButtonProps {
   children: ReactNode | ReactNode[];
   full?: boolean;

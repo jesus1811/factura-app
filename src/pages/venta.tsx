@@ -71,6 +71,8 @@ export function Venta() {
   }));
 
   const UUID = uuidv4();
+  const igv = total * (0.18 / (1 + 0.18));
+  const subTotal = total - igv;
 
   const productFind = products.find((product) => product?.name === search || product?.id === search);
 
@@ -144,6 +146,8 @@ export function Venta() {
       <DataTable columns={columns} rows={rows} className="mt-6" />
 
       <div className="w-full flex  flex-col items-end mt-5">
+        <p>subtotal: {subTotal}</p>
+        <p>igv(18%): {igv?.toFixed(2)}</p>
         <Title>Total a pagar</Title>
         <Title>{total}</Title>
         <div className="flex gap-2 mt-5">
@@ -164,13 +168,13 @@ export function Venta() {
                   client_RUC_DNI: client?.client_RUC_DNI || "unknow",
                   client_surname: client?.client_surname || "unknow",
                   desc: 0,
-                  subTotal: total,
+                  subTotal: subTotal,
                   total: total,
                   id: UUID,
                 },
               });
             }}
-            variant="Alert"
+            variant="Shop"
           >
             Realizar venta
           </Button>

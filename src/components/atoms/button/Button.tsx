@@ -11,6 +11,7 @@ export function Button(props: IButtonProps) {
         {
           "max-w-full": full,
           "hover:bg-alertError bg-[#2a1314]": variant === "Alert",
+          "hover:bg-green-500 bg-[#328651]": variant === "Shop",
           "bg-dark-500 hover:bg-dark-100": variant === "Normal",
         }
       )}

@@ -1,14 +1,18 @@
 import { Button, Loader } from "@/components/atoms";
-import { DataTable, IRows, Icolumns } from "@/components/organisms";
+import { DataTable, IRows, Icolumns, ModalInvoiceDetail } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { getAllInvoices } from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Facturas() {
   const { data: invoices = [], isError, isLoading, isSuccess, refetch: refetchInvoices } = useQuery({ queryKey: ["getAllInvoices"], queryFn: getAllInvoices });
+
   const [isRefreshDisabled, setIsRefreshDisabled] = useState<boolean>(false);
+  const [invoiceId, setInvoiceId] = useState<string>();
+
+  const [isModalDetail, setisModalDetail] = useState<boolean>(false);
   const columns: Icolumns[] = [
     { value: "Nº Factura", nameKey: "id" },
     { value: "Subtotal", nameKey: "subTotal" },
@@ -29,7 +33,13 @@ export function Facturas() {
     ...invoice,
     created_at: moment.utc(invoice?.created_at).local().format("D [de] MMMM [del] YYYY [a las] h:mm a"),
     settings: (
-      <button className="ml-5 ">
+      <button
+        onClick={() => {
+          setInvoiceId(invoice?.id);
+          setisModalDetail(true);
+        }}
+        className="ml-5"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
           <path
             strokeLinecap="round"
@@ -41,12 +51,18 @@ export function Facturas() {
       </button>
     ),
   }));
+
+  useEffect(() => {
+    if (isModalDetail) return;
+    setInvoiceId("");
+  }, [isModalDetail]);
   return (
     <Layout>
       <div className="w-full flex flex-wrap gap-2">{!isRefreshDisabled && <Button onClick={handleRefreshClick}>Refrescar</Button>}</div>
       {isError && <h1>error</h1>}
       {isLoading && <Loader />}
       {!isLoading && isSuccess && <DataTable columns={columns} rows={rows} className="mt-6" />}
+      {invoiceId && <ModalInvoiceDetail invoiceId={invoiceId} closeModal={() => setisModalDetail(false)} isModal={isModalDetail} />}
     </Layout>
   );
 }
