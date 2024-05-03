@@ -37,7 +37,7 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
   return (
     <>
       <Modal closeModal={closeModal} isModal={isModal} className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[31.25rem] flex flex-col px-6 py-9 gap-5">
-        <Title>Agregar producto {JSON.stringify(formData)}</Title>
+        <Title>Agregar producto</Title>
         <TextField value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
         <TextField value={formData?.price} onChange={handleChange} placeholder="cantidad" isFull type="number" name="price" />
         <TextField value={formData?.stock} onChange={handleChange} placeholder="precio" isFull type="number" name="stock" />

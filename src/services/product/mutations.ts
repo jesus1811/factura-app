@@ -1,12 +1,13 @@
 import { axiosInstance } from "../axiosIntance";
 import { DTOCreateProduct, DTODeleteProduct, DTOEditProduct } from "./types";
 
-export const addProduct = async ({ name, price, stock }: DTOCreateProduct) => {
+export const addProduct = async ({ name, price, stock, category_id }: DTOCreateProduct) => {
   try {
     const response = await axiosInstance.post("/product", {
       name,
       price,
       stock,
+      category_id,
     });
     return response.data;
   } catch (error) {
