@@ -18,7 +18,7 @@ export function Categorias() {
     { nameKey: "settings", value: "" },
   ];
 
-  const categoriesSearh = categories.filter((category) => category.name.toLowerCase().includes(search.toLowerCase()));
+  const categoriesSearh = categories.filter((category) => category.name.toLowerCase().includes(search.toLowerCase()) || category.id.toLowerCase().includes(search.toLowerCase()));
 
   const rows: IRows[] = categoriesSearh?.map((category) => ({
     ...category,

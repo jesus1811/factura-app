@@ -70,7 +70,8 @@ export function ModalEditProduct(props: IModalCreateCategory) {
             <Button variant="Alert" onClick={() => setIsModalDelete(true)}>
               Eliminar
             </Button>
-
+          </div>
+          <div className="flex gap-2 items-center">
             <TextField value={aument} onChange={(e) => setAument(Number(e?.target?.value))} placeholder="aumentar stock" isFull type="number" name="stock" />
             <Button
               onClick={() => {
@@ -79,6 +80,14 @@ export function ModalEditProduct(props: IModalCreateCategory) {
               }}
             >
               Aumentar + {aument}
+            </Button>
+            <Button
+              onClick={() => {
+                if (!renderValidate()) return;
+                updateProductMutate({ ...formData, stock: formData?.stock - (aument || 0) });
+              }}
+            >
+              Disminuir - {aument}
             </Button>
           </div>
         </Modal>
@@ -89,7 +98,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
         className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[31.25rem] flex flex-col px-6 py-9 gap-5"
       >
         <Title>Eliminar?</Title>
-        <p>No podra recurperar el dato despues de ser eliminado</p>
+        <p>No podra recuperar el dato despues de ser eliminado</p>
 
         <div className="flex gap-2 items-center">
           <Button

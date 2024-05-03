@@ -21,7 +21,7 @@ export function Productos() {
     { nameKey: "settings", value: "" },
   ];
 
-  const productsSearh = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()));
+  const productsSearh = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()) || product.id.toLowerCase().includes(search.toLowerCase()));
 
   const rows: IRows[] = productsSearh?.map((product) => ({
     ...product,
