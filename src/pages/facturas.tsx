@@ -1,11 +1,14 @@
-import { Button } from "@/components/atoms";
+import { Button, Loader } from "@/components/atoms";
 import { DataTable, IRows, Icolumns } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { getAllInvoices } from "@/services";
 import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
+import { useState } from "react";
 
 export function Facturas() {
-  const { data: invoices = [], isError, isLoading, isSuccess } = useQuery({ queryKey: ["getAllInvoices"], queryFn: getAllInvoices });
+  const { data: invoices = [], isError, isLoading, isSuccess, refetch: refetchInvoices } = useQuery({ queryKey: ["getAllInvoices"], queryFn: getAllInvoices });
+  const [isRefreshDisabled, setIsRefreshDisabled] = useState<boolean>(false);
   const columns: Icolumns[] = [
     { value: "Nº Factura", nameKey: "id" },
     { value: "Subtotal", nameKey: "subTotal" },
@@ -15,8 +18,16 @@ export function Facturas() {
     { nameKey: "settings", value: "" },
   ];
 
+  const handleRefreshClick = () => {
+    setIsRefreshDisabled(true);
+    setTimeout(() => {
+      setIsRefreshDisabled(false);
+    }, 5000);
+    refetchInvoices();
+  };
   const rows: IRows[] = invoices?.map((invoice) => ({
     ...invoice,
+    created_at: moment.utc(invoice?.created_at).local().format("D [de] MMMM [del] YYYY [a las] h:mm a"),
     settings: (
       <button className="ml-5 ">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
@@ -32,16 +43,9 @@ export function Facturas() {
   }));
   return (
     <Layout>
-      <div className="flex items-center gap-2">
-        <Button>
-          Agregar
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 aspect-square">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </Button>
-      </div>
+      <div className="w-full flex flex-wrap gap-2">{!isRefreshDisabled && <Button onClick={handleRefreshClick}>Refrescar</Button>}</div>
       {isError && <h1>error</h1>}
-      {isLoading && <h1>cargando...</h1>}
+      {isLoading && <Loader />}
       {!isLoading && isSuccess && <DataTable columns={columns} rows={rows} className="mt-6" />}
     </Layout>
   );

@@ -3,6 +3,7 @@ import { DTOEditProduct, deleteProduct, updateProduct } from "@/services";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IModalCreateCategory } from "./types";
+import { toast } from "sonner";
 
 export function ModalEditProduct(props: IModalCreateCategory) {
   const { refetch, closeModal, isModal, product } = props;
@@ -16,6 +17,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
       refetch();
       closeModal();
       setIsModalDelete(false);
+      toast("Producto eliminado correctamente");
     },
   });
 
@@ -29,6 +31,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
     onSuccess: () => {
       refetch();
       closeModal();
+      toast("Producto actualizado correctamente");
     },
     onError: (error) => {
       console.error("Error updateCategoryMutate", error);
@@ -72,7 +75,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
             </Button>
           </div>
           <div className="flex gap-2 items-center">
-            <TextField value={aument} onChange={(e) => setAument(Number(e?.target?.value))} placeholder="aumentar stock" isFull type="number" name="stock" />
+            <TextField value={aument} onChange={(e) => setAument(Number(e?.target?.value))} placeholder="aumentar/disminuir" isFull type="number" name="stock" />
             <Button
               onClick={() => {
                 if (!renderValidate()) return;

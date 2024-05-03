@@ -12,6 +12,7 @@ export function Productos() {
   const [product, setProduct] = useState<IProduct>();
   const [isModalCreate, setIsModalCreate] = useState<boolean>(false);
   const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
+  const [isRefreshDisabled, setIsRefreshDisabled] = useState<boolean>(false);
   const columns: Icolumns[] = [
     { value: "Codigo", nameKey: "id" },
     { value: "Nombre", nameKey: "name" },
@@ -20,7 +21,13 @@ export function Productos() {
     { value: "Categoria", nameKey: "category" },
     { nameKey: "settings", value: "" },
   ];
-
+  const handleRefreshClick = () => {
+    setIsRefreshDisabled(true);
+    setTimeout(() => {
+      setIsRefreshDisabled(false);
+    }, 5000);
+    refetchProducts();
+  };
   const productsSearh = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()) || product.id.toLowerCase().includes(search.toLowerCase()));
 
   const rows: IRows[] = productsSearh?.map((product) => ({
@@ -61,6 +68,7 @@ export function Productos() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </Button>
+        {!isRefreshDisabled && <Button onClick={handleRefreshClick}>Refrescar</Button>}
       </div>
       {isError && <h1>error</h1>}
       {isLoading && (

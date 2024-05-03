@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IModalCreateProduct } from "./types";
 import classNames from "classnames";
+import { toast } from "sonner";
 
 export function ModalCreateProduct(props: IModalCreateProduct) {
   const { refetch, closeModal, isModal } = props;
@@ -14,12 +15,21 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
     onSuccess: () => {
       refetch();
       closeModal();
+      toast("Producto creado correctamente");
     },
   });
 
   const renderValidate = () => {
-    if (formData?.name && formData?.price && formData?.stock && formData?.category_id) return true;
-    return false;
+    if (!formData?.category_id) {
+      toast("falta selecionar la categoria al crear");
+      return false;
+    }
+    if (!formData?.name || !formData?.price || !formData?.stock) {
+      toast("falta llenar datos al crear");
+      return false;
+    }
+
+    return true;
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
@@ -37,10 +47,10 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
   return (
     <>
       <Modal closeModal={closeModal} isModal={isModal} className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[31.25rem] flex flex-col px-6 py-9 gap-5">
-        <Title>Agregar producto</Title>
+        <Title>Agregar producto {JSON.stringify(formData?.category_id)}</Title>
         <TextField value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
-        <TextField value={formData?.price} onChange={handleChange} placeholder="cantidad" isFull type="number" name="price" />
-        <TextField value={formData?.stock} onChange={handleChange} placeholder="precio" isFull type="number" name="stock" />
+        <TextField value={formData?.price} onChange={handleChange} placeholder="precio" isFull type="number" name="price" />
+        <TextField value={formData?.stock} onChange={handleChange} placeholder="cantidad" isFull type="number" name="stock" />
         {isLoading && <Loader />}
         {!isLoading && (
           <select
@@ -49,6 +59,7 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
             id=""
             className={classNames("bg-dark-50 px-3 h-[2.5rem] w-full  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none")}
           >
+            <option value="">Selecciona una categoría</option>
             {categories?.map((category) => (
               <option key={category?.id} value={category?.id}>
                 {category?.name}

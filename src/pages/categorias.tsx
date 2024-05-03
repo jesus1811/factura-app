@@ -10,6 +10,7 @@ export function Categorias() {
   const [isModalCreate, setIsModalCreate] = useState<boolean>(false);
   const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
   const [category, setCategory] = useState<ICategory>();
+  const [isRefreshDisabled, setIsRefreshDisabled] = useState<boolean>(false);
   const { data: categories = [], isError, isLoading, isSuccess, refetch: refetchCategories } = useQuery({ queryKey: ["getAllCategories"], queryFn: getAllCategories });
 
   const columns: Icolumns[] = [
@@ -19,6 +20,14 @@ export function Categorias() {
   ];
 
   const categoriesSearh = categories.filter((category) => category.name.toLowerCase().includes(search.toLowerCase()) || category.id.toLowerCase().includes(search.toLowerCase()));
+
+  const handleRefreshClick = () => {
+    setIsRefreshDisabled(true);
+    setTimeout(() => {
+      setIsRefreshDisabled(false);
+    }, 5000);
+    refetchCategories();
+  };
 
   const rows: IRows[] = categoriesSearh?.map((category) => ({
     ...category,
@@ -56,6 +65,7 @@ export function Categorias() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </Button>
+          {!isRefreshDisabled && <Button onClick={handleRefreshClick}>Refrescar</Button>}
         </div>
         {isError && <h1>error</h1>}
         {isLoading && (

@@ -3,6 +3,7 @@ import { DTOEditCategory, deleteCategory, updateCategory } from "@/services";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IModalCreateCategory } from "./types";
+import { toast } from "sonner";
 
 export function ModalEditCategory(props: IModalCreateCategory) {
   const { refetch, closeModal, isModal, category } = props;
@@ -15,6 +16,7 @@ export function ModalEditCategory(props: IModalCreateCategory) {
       refetch();
       closeModal();
       setIsModalDelete(false);
+      toast("Categoria eliminada correctamente");
     },
   });
 
@@ -28,6 +30,7 @@ export function ModalEditCategory(props: IModalCreateCategory) {
     onSuccess: () => {
       refetch();
       closeModal();
+      toast("Categoria actualizada correctamente");
     },
     onError: (error) => {
       console.error("Error updating category:", error);

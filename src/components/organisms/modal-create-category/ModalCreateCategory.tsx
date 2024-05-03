@@ -3,6 +3,7 @@ import { DTOCreateCategory, addCategory } from "@/services";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IModalCreateCategory } from "./types";
+import { toast } from "sonner";
 
 export function ModalCreateCategory(props: IModalCreateCategory) {
   const { refetch, closeModal, isModal } = props;
@@ -13,6 +14,7 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
     onSuccess: () => {
       refetch();
       closeModal();
+      toast("Categoria creada correctamente");
     },
   });
 
