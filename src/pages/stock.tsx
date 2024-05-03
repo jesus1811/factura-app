@@ -1,19 +1,23 @@
-import { Button, TextField } from "@/components/atoms";
-import { DataTable, IRows, Icolumns } from "@/components/organisms";
+import { Button, Loader, TextField } from "@/components/atoms";
+import { DataTable, IRows, Icolumns, ModalCreateProduct } from "@/components/organisms";
+import ModalEditProduct from "@/components/organisms/modal-edit-product/ModalEditProduct";
 import { Layout } from "@/components/templates";
-import { getAllProducts } from "@/services";
+import { IProduct, getAllProducts } from "@/services";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Productos() {
-  const { data: products = [], isError, isLoading, isSuccess } = useQuery({ queryKey: ["getAllProducts"], queryFn: getAllProducts });
+  const { data: products = [], isError, isLoading, isSuccess, refetch: refetchProducts } = useQuery({ queryKey: ["getAllProducts"], queryFn: getAllProducts });
   const [search, setSearch] = useState<string>("");
+  const [product, setProduct] = useState<IProduct>();
+  const [isModalCreate, setIsModalCreate] = useState<boolean>(false);
+  const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
   const columns: Icolumns[] = [
     { value: "Codigo", nameKey: "id" },
     { value: "Nombre", nameKey: "name" },
     { value: "Precio", nameKey: "price" },
     { value: "Cantidad", nameKey: "stock" },
-    { value: "Fecha", nameKey: "create_at" },
+    { value: "Categoria", nameKey: "category" },
     { nameKey: "settings", value: "" },
   ];
 
@@ -21,8 +25,15 @@ export function Productos() {
 
   const rows: IRows[] = productsSearh?.map((product) => ({
     ...product,
+    category: product?.category?.name,
     settings: (
-      <button className="ml-5 ">
+      <button
+        onClick={() => {
+          setProduct(product);
+          setIsModalEdit(true);
+        }}
+        className="ml-5"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
           <path
             strokeLinecap="round"
@@ -35,11 +46,16 @@ export function Productos() {
     ),
   }));
 
+  useEffect(() => {
+    if (isModalEdit) return;
+    setProduct({} as IProduct);
+  }, [isModalEdit]);
+
   return (
     <Layout>
       <div className="w-full flex flex-wrap gap-2">
         <TextField value={search} placeholder="Buscar" onChange={(event) => setSearch(event.currentTarget.value)} />
-        <Button>
+        <Button onClick={() => setIsModalCreate(true)}>
           Agregar
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 aspect-square">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -47,8 +63,14 @@ export function Productos() {
         </Button>
       </div>
       {isError && <h1>error</h1>}
-      {isLoading && <h1>cargando...</h1>}
+      {isLoading && (
+        <div className="mt-6">
+          <Loader />
+        </div>
+      )}
       {!isLoading && isSuccess && <DataTable columns={columns} rows={rows} className="mt-6" />}
+      <ModalCreateProduct refetch={refetchProducts} closeModal={() => setIsModalCreate(false)} isModal={isModalCreate} />
+      {product && <ModalEditProduct closeModal={() => setIsModalEdit(false)} isModal={isModalEdit} product={product} refetch={refetchProducts} />}
     </Layout>
   );
 }

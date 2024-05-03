@@ -1,7 +1,7 @@
 import { axiosInstance } from "../axiosIntance";
-import { ICategories } from "./types";
+import { ICategory } from "./types";
 
-export const getAllCategories = async (): Promise<ICategories[] | undefined> => {
+export const getAllCategories = async (): Promise<ICategory[] | undefined> => {
   try {
     const response = await axiosInstance.get("/category", { params: { select: "*" } });
     if (response.status === 200 && response) return response.data;
