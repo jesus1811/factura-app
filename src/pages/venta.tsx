@@ -19,6 +19,8 @@ export function Venta() {
     },
   });
 
+  const [countProductFind, setCountProductFind] = useState<number>();
+
   const [search, setSearch] = useState<string>("");
 
   const [client, setClient] = useState<{ client_name: string; client_surname: string; client_RUC_DNI: string }>({} as { client_name: string; client_surname: string; client_RUC_DNI: string });
@@ -112,8 +114,9 @@ export function Venta() {
           {productFind && (
             <Button
               onClick={() => {
-                addCart(productFind);
+                addCart({ ...productFind, count: countProductFind || 0 });
                 setSearch("");
+                setCountProductFind(0);
               }}
             >
               Agregar
@@ -139,8 +142,8 @@ export function Venta() {
           <TextField value={productFind?.price || ""} disabled />
         </div>
         <div>
-          <label htmlFor="">Stock actual</label>
-          <TextField value={productFind?.stock || ""} disabled />
+          <label htmlFor="">Cantidad</label>
+          <TextField value={countProductFind || ""} onChange={(e) => setCountProductFind(Number(e.currentTarget?.value))} />
         </div>
       </div>
       <DataTable columns={columns} rows={rows} className="mt-6" />

@@ -15,12 +15,12 @@ export const useCartStore = create<State>((set) => ({
       const isCart = cart.some((cart) => cart.id === newProduct.id);
       if (!isCart) {
         localStorage.setItem("CART", JSON.stringify([...cart, { ...newProduct, count: 1 }]));
-        return { cart: [...cart, { ...newProduct, count: 1 }] };
+        return { cart: [...cart, { ...newProduct, count: newProduct?.count || 1 }] };
       }
       localStorage.setItem("CART", JSON.stringify(cart?.map((product) => ({ ...product, count: (product?.count || 0) + 1 }))));
       return {
         cart: cart?.map((product) => {
-          if (product?.id === newProduct?.id) return { ...product, count: (product?.count || 0) + 1 };
+          if (product?.id === newProduct?.id) return { ...product, count: (product?.count || 0) + newProduct?.count || 1 };
           return product;
         }),
       };
@@ -51,7 +51,7 @@ export const useCartStore = create<State>((set) => ({
 
 interface State {
   cart: IProductCart[];
-  addCart: (newProduct: IProduct) => void;
+  addCart: (newProduct: IProductCart) => void;
   loadStore: () => void;
   clearStorage: () => void;
   changeCountProduct: (idProduct: string, count: number) => void;
