@@ -13,24 +13,35 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
   const invoice = invoiceDetails?.find((invoiceDetail) => invoiceDetail)?.invoice;
 
   const printInvoiceDetail = () => {
-    const contenidoParaImprimir = document.getElementById("invoice");
-    if (!contenidoParaImprimir) return;
-    const ventanaImpresion = window.open("", "_blank");
-    if (!ventanaImpresion) return;
-    ventanaImpresion.document.write(`
+    const contentPrint = document.getElementById("invoice");
+    if (!contentPrint) return;
+    const winPrint = window.open("", "_blank");
+    if (!winPrint) return;
+    winPrint.document.write(`
                 <!DOCTYPE html>
                 <html>
                 <head>
                     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+                    <style>
+                    #invoice {
+                      padding-left: 64px;
+                      padding-right: 64px;
+                      width: 100%;
+                      max-width: 500px;
+                      margin: 0 auto;
+                    }
+                    </style>
                 </head>
                 <body>
-                    ${contenidoParaImprimir.outerHTML}
+                    ${contentPrint.outerHTML}
                 </body>
                 </html>
             `);
 
-    ventanaImpresion.document.close();
-    ventanaImpresion.print();
+    winPrint.document.close();
+    winPrint.onload = function () {
+      winPrint.print();
+    };
   };
 
   return (
