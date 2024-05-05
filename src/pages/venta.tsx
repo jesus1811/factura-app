@@ -3,17 +3,18 @@ import { DataTable, IRows, Icolumns } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { addInvoice, getAllProducts } from "@/services";
 import { useCartStore } from "@/store";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 export function Venta() {
   const { cart, addCart, loadStore, clearStorage, changeCountProduct } = useCartStore();
   const { data: products = [] } = useQuery({ queryKey: ["getAllProducts"], queryFn: getAllProducts });
-
+  const queryClient = useQueryClient();
   const { mutate: addInvoiceMutate } = useMutation({
     mutationFn: addInvoice,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
       toast("Compra realizada correctamente");
       clearStorage();
     },
