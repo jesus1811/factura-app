@@ -7,12 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export function Productos() {
-  const { data: products = [], isError, isLoading, isSuccess, refetch: refetchProducts } = useQuery({ queryKey: ["getAllProducts"], queryFn: getAllProducts });
+  const { data: products = [], isError, isLoading, isSuccess, refetch: refetchProducts, isFetching } = useQuery({ queryKey: ["getAllProducts"], queryFn: getAllProducts });
   const [search, setSearch] = useState<string>("");
   const [product, setProduct] = useState<IProduct>();
   const [isModalCreate, setIsModalCreate] = useState<boolean>(false);
   const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
-  const [isRefreshDisabled, setIsRefreshDisabled] = useState<boolean>(false);
   const columns: Icolumns[] = [
     { value: "Codigo", nameKey: "id" },
     { value: "Nombre", nameKey: "name" },
@@ -21,14 +20,11 @@ export function Productos() {
     { value: "Categoria", nameKey: "category" },
     { nameKey: "settings", value: "" },
   ];
-  const handleRefreshClick = () => {
-    setIsRefreshDisabled(true);
-    setTimeout(() => {
-      setIsRefreshDisabled(false);
-    }, 5000);
-    refetchProducts();
-  };
-  const productsSearh = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()) || product.id.toLowerCase().includes(search.toLowerCase()));
+
+  const productsSearh = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(search.toLowerCase()) || product.id.toLowerCase().includes(search.toLowerCase()) || product.category?.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const rows: IRows[] = productsSearh?.map((product) => ({
     ...product,
@@ -41,7 +37,7 @@ export function Productos() {
         }}
         className="ml-5"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-7 h-7">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -68,7 +64,7 @@ export function Productos() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </Button>
-        {!isRefreshDisabled && <Button onClick={handleRefreshClick}>Refrescar</Button>}
+        {isFetching ? <Loader /> : <Button onClick={refetchProducts}>Refrescar</Button>}
       </div>
       {isError && <h1>error</h1>}
       {isLoading && (

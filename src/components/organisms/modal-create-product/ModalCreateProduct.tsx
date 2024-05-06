@@ -20,12 +20,12 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
   });
 
   const renderValidate = () => {
-    if (!formData?.category_id) {
-      toast("falta selecionar la categoria al crear");
+    if (!formData?.name || !formData?.price || !formData?.stock) {
+      toast("faltan datos al crear el producto", { className: "!bg-alertError" });
       return false;
     }
-    if (!formData?.name || !formData?.price || !formData?.stock) {
-      toast("falta llenar datos al crear");
+    if (!formData?.category_id) {
+      toast("falta selecionar la categoria al crear", { className: "!bg-alertError" });
       return false;
     }
 

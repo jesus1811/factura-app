@@ -19,8 +19,11 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
   });
 
   const renderValidate = () => {
-    if (formData?.name) return true;
-    return false;
+    if (!formData?.name) {
+      toast("faltan datos al crear la Categoria", { className: "!bg-alertError" });
+      return false;
+    }
+    return true;
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

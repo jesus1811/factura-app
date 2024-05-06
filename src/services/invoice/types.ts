@@ -9,6 +9,8 @@ export interface IInvoice {
   subTotal: number;
   total: number;
   desc: number;
+  type: string;
+  invoice_method: IInvoiceMethod;
 }
 
 export interface IInvoiceDetail {
@@ -29,6 +31,10 @@ export interface DTOCreateInvoiceDetail {
   price: number;
 }
 
+export enum TypeShop {
+  Receipt = "Boleta",
+  Invoice = "Factura",
+}
 export interface DTOCreateInvoice {
   id: string;
   client_name: string;
@@ -37,4 +43,12 @@ export interface DTOCreateInvoice {
   desc: number;
   subTotal: number;
   total: number;
+  invoice_method_id: string;
+  type: TypeShop;
+}
+
+export interface IInvoiceMethod {
+  id: string;
+  created_at: string;
+  name: string;
 }

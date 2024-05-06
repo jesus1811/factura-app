@@ -1,14 +1,22 @@
 import { Button, Loader, Modal, Title } from "@/components/atoms";
 import { IModalInvoiceDetailProps } from "./types";
-import { useQuery } from "@tanstack/react-query";
-import { getInvoiceDetails } from "@/services";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { TypeShop, deleteInvoice, getInvoiceDetails } from "@/services";
 import moment from "moment";
-import { useEffect } from "react";
+import { toast } from "sonner";
 
 export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
   const { closeModal, isModal, invoiceId } = props;
-
+  const queryClient = useQueryClient();
   const { data: invoiceDetails = [], isFetching } = useQuery({ queryKey: ["getInvoiceDetails", invoiceId], queryFn: () => getInvoiceDetails({ invoiceId: invoiceId }) });
+  const { mutate: deleteInvoiceMutate } = useMutation({
+    mutationFn: deleteInvoice,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
+      toast("Eliminado eliminada correctamente");
+      closeModal();
+    },
+  });
 
   const invoice = invoiceDetails?.find((invoiceDetail) => invoiceDetail)?.invoice;
 
@@ -47,7 +55,9 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
   return (
     <Modal closeModal={closeModal} isModal={isModal} className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[480px] flex flex-col px-6 py-9 gap-5">
       <div className="flex justify-center">
-        <Title>Detalle factura</Title>
+        <Title>
+          Detalle {invoice?.type} - {invoice?.invoice_method?.name}
+        </Title>
       </div>
       {isFetching && <Loader />}
       {!isFetching && (
@@ -68,12 +78,15 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
 
           <hr className="border-gray-500 my-3" />
 
-          <p className="uppercase">
-            NOMBRES: {invoice?.client_name} {invoice?.client_surname}
-          </p>
-          <p className="uppercase">RUC/C.I/PPT: {invoice?.client_RUC_DNI}</p>
-
-          <hr className="border-gray-500 my-3" />
+          {invoice?.type === TypeShop.Invoice && (
+            <div className="w-full">
+              <p className="uppercase">
+                NOMBRES: {invoice?.client_name} {invoice?.client_surname}
+              </p>
+              <p className="uppercase">RUC: {invoice?.client_RUC_DNI}</p>
+              <hr className="border-gray-500 my-3" />
+            </div>
+          )}
 
           <table className="mb-5 w-full">
             <thead>
@@ -107,7 +120,7 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
           <p className="pt-5 text-center">MUCHAS GRACIAS POR SU COMPRA</p>
         </div>
       )}
-      <div className="px-5">
+      <div className="px-5 flex w-full gap-2">
         <Button onClick={printInvoiceDetail}>
           Imprimir{" "}
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
@@ -118,6 +131,11 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
             />
           </svg>
         </Button>
+        {invoice && (
+          <Button variant="Alert" onClick={() => deleteInvoiceMutate({ invoiceId: invoice?.id, invoiceDetails: invoiceDetails })}>
+            Eliminar
+          </Button>
+        )}
       </div>
     </Modal>
   );

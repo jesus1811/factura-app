@@ -1,7 +1,7 @@
 import { axiosInstance } from "../axiosIntance";
 import { updateProduct } from "../product/mutations";
 import { getProductDetail } from "../product/queries";
-import { DTOCreateInvoiceDetail, DTOCreateInvoice } from "./types";
+import { DTOCreateInvoiceDetail, DTOCreateInvoice, IInvoiceDetail } from "./types";
 
 export const addInvoice = async ({ invoiceDetails, invoice }: { invoiceDetails: DTOCreateInvoiceDetail[]; invoice: DTOCreateInvoice }) => {
   try {
@@ -16,5 +16,25 @@ export const addInvoice = async ({ invoiceDetails, invoice }: { invoiceDetails: 
     }
   } catch (error) {
     console.error(error);
+    console.error("Error al agregar la factura y/o sus detalles de factura:", error);
+  }
+};
+
+export const deleteInvoice = async ({ invoiceDetails, invoiceId }: { invoiceId: string; invoiceDetails: IInvoiceDetail[] }) => {
+  try {
+    for (const detail of invoiceDetails) {
+      await axiosInstance.delete(`/invoice_detail`, {
+        params: {
+          id: `eq.${detail?.id}`,
+        },
+      });
+    }
+    await axiosInstance.delete(`/invoice`, {
+      params: {
+        id: `eq.${invoiceId}`,
+      },
+    });
+  } catch (error) {
+    console.error("Error al eliminar la factura y/o sus detalles de factura:", error);
   }
 };

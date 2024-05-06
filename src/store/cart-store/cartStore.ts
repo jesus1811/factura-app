@@ -12,7 +12,7 @@ export const useCartStore = create<State>((set) => ({
   isCart: false,
   addCart: (newProduct) => {
     set(({ cart }) => {
-      const isCart = cart.some((cart) => cart.id === newProduct.id);
+      const isCart = cart.some((cart) => cart.id === newProduct.id && cart?.price === newProduct?.price);
       if (!isCart) {
         localStorage.setItem("CART", JSON.stringify([...cart, { ...newProduct, count: 1 }]));
         return { cart: [...cart, { ...newProduct, count: newProduct?.count || 1 }] };
@@ -20,7 +20,7 @@ export const useCartStore = create<State>((set) => ({
       localStorage.setItem("CART", JSON.stringify(cart?.map((product) => ({ ...product, count: (product?.count || 0) + 1 }))));
       return {
         cart: cart?.map((product) => {
-          if (product?.id === newProduct?.id) return { ...product, count: (product?.count || 0) + newProduct?.count || 1 };
+          if (product?.id === newProduct?.id && product?.price === newProduct?.price) return { ...product, count: (product?.count || 0) + newProduct?.count || 1 };
           return product;
         }),
       };
@@ -37,13 +37,27 @@ export const useCartStore = create<State>((set) => ({
       return { cart: JSON.parse(localStorage.getItem("CART") || "[]") };
     });
   },
-  changeCountProduct: (idProduct, count) => {
+  changeProduct: (productUpdate) => {
     set(({ cart }) => {
+      const productsUpdate = cart?.map((product) => {
+        if (product?.id === productUpdate?.id && product?.price === productUpdate?.price) return { ...product, count: productUpdate?.count };
+        return product;
+      });
+      localStorage.setItem("CART", JSON.stringify(productsUpdate));
       return {
-        cart: cart?.map((product) => {
-          if (product?.id === idProduct) return { ...product, count: count };
-          return product;
-        }),
+        cart: productsUpdate,
+      };
+    });
+  },
+  deleteProduct: (productDelete) => {
+    set(({ cart }) => {
+      const productsDelete = cart?.filter((product) => {
+        if (product?.id === productDelete?.id && product?.price === productDelete?.price) return;
+        return product;
+      });
+      localStorage.setItem("CART", JSON.stringify(productsDelete));
+      return {
+        cart: productsDelete,
       };
     });
   },
@@ -54,5 +68,6 @@ interface State {
   addCart: (newProduct: IProductCart) => void;
   loadStore: () => void;
   clearStorage: () => void;
-  changeCountProduct: (idProduct: string, count: number) => void;
+  changeProduct: (productUpdate: IProductCart) => void;
+  deleteProduct: (productDelee: IProductCart) => void;
 }
