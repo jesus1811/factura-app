@@ -17,7 +17,7 @@ export function SideBar(props: SideBarProps) {
     >
       <div className={classNames("flex items-center py-4 px-7  font-bold border-b border-black ", { "justify-center": !isSidebar, "justify-between": isSidebar })}>
         <div className={classNames("w-full flex items-center pb-5 gap-2 border-gray-500 border-b-[1px]  ", { "justify-center": !isSidebar })}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 stroke-primary-500">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -25,11 +25,11 @@ export function SideBar(props: SideBarProps) {
             />
           </svg>
           <span
-            className={classNames("block text-white text-xl", {
+            className={classNames("block text-primary-500 text-xl", {
               hidden: !isSidebar,
             })}
           >
-            Tienda{" "}
+            Factura Pro
           </span>
         </div>
 

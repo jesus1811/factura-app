@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 
-export type TypeButton = "Alert" | "Normal" | "Shop";
+export type TypeButton = "Alert" | "normal" | "Shop" | "outline";
 export interface IButtonProps {
   children: ReactNode | ReactNode[];
-  full?: boolean;
+  isFull?: boolean;
   onClick?: () => void;
   variant?: TypeButton;
 }

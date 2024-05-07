@@ -159,7 +159,6 @@ export function Venta() {
                     },
                   });
                 }}
-                variant="Shop"
               >
                 Realizar venta
               </Button>

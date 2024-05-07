@@ -56,7 +56,13 @@ export function Categorias() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </Button>
-          {isFetching ? <Loader /> : <Button onClick={refetchCategories}>Refrescar</Button>}
+          {isFetching ? (
+            <Loader />
+          ) : (
+            <Button variant="outline" onClick={refetchCategories}>
+              Refrescar
+            </Button>
+          )}
         </div>
         {isError && <h1>error</h1>}
         {isLoading && (
