@@ -83,7 +83,7 @@ export default function Home() {
         </article>
         <div className="flex-[3]">
           {isLoading && <Loader />}
-          {!isLoading && <Chart data={invoicesList} title="Ventas" />}
+          {!isLoading && <Chart data={invoicesList} title="Facturas" />}
         </div>
       </div>
       <div className=" w-full mt-6 flex gap-6 items-start">
@@ -96,7 +96,7 @@ export default function Home() {
         </article>
         <div className="flex-[3]">
           {isLoading && <Loader />}
-          {!isLoading && <Chart data={receiptList} title="Ventas" />}
+          {!isLoading && <Chart data={receiptList} title="Boletas" />}
         </div>
       </div>
     </Layout>
