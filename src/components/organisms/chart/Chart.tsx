@@ -1,6 +1,9 @@
+import { Title } from "@/components/atoms";
 import { createChart, ColorType } from "lightweight-charts";
 import { useEffect, useRef } from "react";
-export function Chart() {
+import { IChartProps } from "./types";
+export function Chart(props: IChartProps) {
+  const { data, title } = props;
   const chartContainerRef = useRef<any>();
 
   const colors = {
@@ -11,19 +14,15 @@ export function Chart() {
     areaBottomColor: "rgba(90, 87, 238,0.28)",
   };
 
-  const data = [
-    { time: "2018-12-22", value: 32.51 },
-    { time: "2018-12-23", value: 31.11 },
-    { time: "2018-12-24", value: 27.02 },
-    { time: "2018-12-25", value: 27.32 },
-    { time: "2018-12-26", value: 25.17 },
-    { time: "2018-12-27", value: 28.89 },
-    { time: "2018-12-28", value: 25.46 },
-    { time: "2018-12-29", value: 23.92 },
-    { time: "2018-12-30", value: 22.68 },
-    { time: "2018-12-31", value: 22.67 },
-  ];
-
+  const combinedData = data.reduce((acc: { time: string; value: number }[], curr) => {
+    const existingItem = acc.find((item) => item.time === curr.time);
+    if (existingItem) {
+      existingItem.value += curr.value;
+    } else {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
   const { areaBottomColor, textColor, backgroundColor, areaTopColor, lineColor } = colors;
 
   useEffect(() => {
@@ -62,7 +61,7 @@ export function Chart() {
     chart.timeScale().fitContent();
 
     const newSeries = chart.addAreaSeries({ lineColor, topColor: areaTopColor, bottomColor: areaBottomColor });
-    newSeries.setData(data);
+    newSeries.setData(combinedData);
 
     window.addEventListener("resize", handleResize);
 
@@ -71,10 +70,13 @@ export function Chart() {
 
       chart.remove();
     };
-  }, [data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor]);
+  }, [backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor, combinedData]);
   return (
-    <div>
-      <div ref={chartContainerRef} />
+    <div className="rounded-lg border border-gray-500 py-2.5 px-5 flex-1">
+      <Title>{title}</Title>
+      <div>
+        <div ref={chartContainerRef} />
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ export interface IInvoice {
   subTotal: number;
   total: number;
   desc: number;
-  type: string;
+  type: TypeShop;
   invoice_method: IInvoiceMethod;
 }
 
