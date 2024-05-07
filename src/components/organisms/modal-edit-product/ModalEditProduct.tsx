@@ -17,7 +17,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
       refetch();
       closeModal();
       setIsModalDelete(false);
-      toast("Producto eliminado correctamente");
+      toast("Producto eliminado correctamente", { className: "!bg-primary-500" });
     },
   });
 
@@ -31,7 +31,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
     onSuccess: () => {
       refetch();
       closeModal();
-      toast("Producto actualizado correctamente");
+      toast("Producto actualizado correctamente", { className: "!bg-primary-500" });
     },
     onError: (error) => {
       console.error("Error updateCategoryMutate", error);

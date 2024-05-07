@@ -14,7 +14,7 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
     onSuccess: () => {
       refetch();
       closeModal();
-      toast("Categoria creada correctamente");
+      toast("Categoria creada correctamente", { className: "!bg-primary-500" });
     },
   });
 

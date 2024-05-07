@@ -15,7 +15,7 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
     onSuccess: () => {
       refetch();
       closeModal();
-      toast("Producto creado correctamente");
+      toast("Producto creado correctamente", { className: "!bg-primary-500" });
     },
   });
 

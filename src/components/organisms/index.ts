@@ -6,3 +6,4 @@ export * from "./modal-create-category/ModalCreateCategory";
 export * from "./modal-edit-category/ModalEditCategory";
 export * from "./modal-create-product/ModalCreateProduct";
 export * from "./modal-invoice-detail/ModalInvoiceDetail";
+export * from "./chart/Chart";

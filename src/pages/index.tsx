@@ -1,3 +1,5 @@
+import { Title } from "@/components/atoms";
+import { Chart } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { getAllInvoices } from "@/services";
 import { useQuery } from "@tanstack/react-query";
@@ -45,7 +47,16 @@ export default function Home() {
           </div>
         </div>
       </div>
-
+      <div className=" w-full mt-6 flex gap-6">
+        <div className="rounded-lg border border-gray-500 py-2.5 px-5 flex-1">
+          <Title>Ganancias de las ventas</Title>
+          <Chart />
+        </div>
+        <div className="rounded-lg border border-gray-500 py-2.5 px-5 flex-1">
+          <Title>IGV de las ventas</Title>
+          <Chart />
+        </div>
+      </div>
       <h1></h1>
     </Layout>
   );

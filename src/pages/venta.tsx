@@ -17,7 +17,7 @@ export function Venta() {
     mutationFn: addInvoice,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
-      toast("Compra realizada correctamente");
+      toast("Compra realizada correctamente", { className: "!bg-primary-500" });
       clearStorage();
     },
   });
