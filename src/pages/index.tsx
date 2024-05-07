@@ -1,4 +1,4 @@
-import { Title } from "@/components/atoms";
+import { Loader, Title } from "@/components/atoms";
 import { Chart } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { TypeShop, getAllInvoices } from "@/services";
@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
 export default function Home() {
-  const { data: invoices = [] } = useQuery({ queryKey: ["getAllInvoices"], queryFn: getAllInvoices });
+  const { data: invoices = [], isLoading } = useQuery({ queryKey: ["getAllInvoices"], queryFn: getAllInvoices });
 
   const profitsDay = invoices
     ?.map((invoice) => ({ ...invoice, created_at: moment.utc(invoice.created_at).format() }))
@@ -43,19 +43,19 @@ export default function Home() {
       <div className="w-full grid md:grid-cols-3 text-white gap-5">
         <div className={`bg-[#328651] rounded-md h-fit`}>
           <div className={`icon_money p-5`}>
-            <h2 className="font-bold mb-5 text-2xl">$ {profitsDay}</h2>
+            <h2 className="font-bold mb-5 text-2xl">S/{profitsDay}</h2>
             <p>Ganancias del día </p>
           </div>
         </div>
         <div className={`bg-[#2d788b] rounded-md h-fit`}>
           <div className={`icon_money p-5`}>
-            <h2 className="font-bold mb-5 text-2xl">$ {profitsMount}</h2>
+            <h2 className="font-bold mb-5 text-2xl">S/{profitsMount}</h2>
             <p>Ganancias del mes</p>
           </div>
         </div>
         <div className={`bg-[#2a1314] rounded-md h-fit`}>
           <div className={`icon_money p-5`}>
-            <h2 className="font-bold mb-5 text-2xl">$ {profitsMountPased}</h2>
+            <h2 className="font-bold mb-5 text-2xl">S/{profitsMountPased}</h2>
             <p>Ganancias mes pasado</p>
           </div>
         </div>
@@ -69,7 +69,8 @@ export default function Home() {
           </div>
         </article>
         <div className="flex-[3]">
-          <Chart data={shopsList} title="Ventas" />
+          {isLoading && <Loader />}
+          {!isLoading && <Chart data={shopsList} title="Ventas" />}
         </div>
       </div>
       <div className=" w-full mt-6 flex gap-6 items-start">
@@ -81,7 +82,8 @@ export default function Home() {
           </div>
         </article>
         <div className="flex-[3]">
-          <Chart data={invoicesList} title="Ventas" />
+          {isLoading && <Loader />}
+          {!isLoading && <Chart data={invoicesList} title="Ventas" />}
         </div>
       </div>
       <div className=" w-full mt-6 flex gap-6 items-start">
@@ -89,11 +91,12 @@ export default function Home() {
           <Title>Boletas</Title>
           <div className="flex w-full justify-between">
             <p>Total ventas</p>
-            <p>{receiptListTotal}</p>
+            <p>S/{receiptListTotal}</p>
           </div>
         </article>
         <div className="flex-[3]">
-          <Chart data={receiptList} title="Ventas" />
+          {isLoading && <Loader />}
+          {!isLoading && <Chart data={receiptList} title="Ventas" />}
         </div>
       </div>
     </Layout>

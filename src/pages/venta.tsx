@@ -131,10 +131,10 @@ export function Venta() {
           <DataTable columns={columns} rows={rows} className="mt-6" />
 
           <div className="w-full flex  flex-col items-end mt-5">
-            <p>subtotal: {subTotal?.toFixed(2)}</p>
-            <p>igv(18%): {igv?.toFixed(2)}</p>
+            <p>subtotal: S/{subTotal?.toFixed(2)}</p>
+            <p>igv(18%): S/{igv?.toFixed(2)}</p>
             <Title>Total a pagar</Title>
-            <Title>{total}</Title>
+            <Title>S/{total}</Title>
             <div className="flex gap-2 mt-5">
               <Button
                 onClick={() => {
