@@ -31,15 +31,15 @@ export function Login() {
   }
 
   const changeOrientation = (orientation: any) => {
-    if (screen.orientation.lock) {
-      screen.orientation.lock(orientation);
-    } else if (screen.orientation.lock) {
-      screen.orientation.lock(orientation);
+    if (screen?.orientation?.lock) {
+      screen?.orientation?.lock(orientation);
+    } else if (screen?.orientation?.lock) {
+      screen?.orientation?.lock(orientation);
     }
   };
 
   const handleOrentiacion = () => {
-    if (screen.orientation.type.startsWith("portrait")) {
+    if (screen?.orientation?.type.startsWith("portrait")) {
       changeOrientation("landscape-primary");
     } else {
       changeOrientation("portrait-primary");
