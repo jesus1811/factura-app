@@ -42,14 +42,14 @@ export function Venta() {
 
   const renderValidateaddInvoice = () => {
     if (!cart || !total) {
-      toast("No hay productos para vender", { className: "!bg-alertError" });
+      // toast("No hay productos para vender", { className: "!bg-alertError" });
       return false;
     }
     if (typeShop === TypeShop?.Receipt) {
       return true;
     }
     if (!client?.client_name || !client?.client_surname || !client?.client_RUC_DNI) {
-      toast("Faltan datos del cliente", { className: "!bg-alertError" });
+      // toast("Faltan datos del cliente", { className: "!bg-alertError" });
       return false;
     }
     return true;
@@ -83,7 +83,6 @@ export function Venta() {
 
   useEffect(() => {
     loadStore();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -109,15 +108,21 @@ export function Venta() {
             </datalist>
             <div>
               <label htmlFor="">Precio</label>
-              <TextField value={productFind ? productPrice : ""} onChange={(e) => setProductPrice(Number(e.currentTarget?.value))} />
+              <TextField type="number" value={productFind ? productPrice : ""} onChange={(e) => setProductPrice(Number(e.currentTarget?.value))} />
             </div>
             <div>
               <label htmlFor="">Cantidad</label>
-              <TextField value={productFind ? productCount : ""} onChange={(e) => setProducCount(Number(e.currentTarget?.value))} />
+              <TextField
+                type="number"
+                error={productFind && Number(productFind?.stock || 0) < productCount ? "No hay stock en el inventario" : undefined}
+                value={productFind ? productCount : ""}
+                onChange={(e) => setProducCount(Number(e.currentTarget?.value))}
+              />
             </div>
 
             {productFind && (
               <Button
+                isDisabled={Number(productFind?.stock || 0) < productCount}
                 onClick={() => {
                   addCart({ ...productFind, count: productCount || 0, price: productPrice?.toString() });
                   setSearch("");
@@ -140,6 +145,7 @@ export function Venta() {
             <Title>S/{total}</Title>
             <div className="flex gap-2 mt-5">
               <Button
+                isDisabled={!renderValidateaddInvoice()}
                 onClick={() => {
                   if (!renderValidateaddInvoice()) return;
                   addInvoiceMutate({
@@ -226,16 +232,24 @@ export function Venta() {
               <Title>Cliente {client ? "si hay" : "no hay"}</Title>
               <div className="w-full mt-5">
                 <div>
-                  <label htmlFor="">Nombre</label>
-                  <TextField value={client?.client_name} onChange={(e) => setClient((prev) => ({ ...prev, client_name: e.target.value }))} />
+                  <label>Nombre</label>
+                  <TextField error={client?.client_name ? undefined : "Requerido"} value={client?.client_name} onChange={(e) => setClient((prev) => ({ ...prev, client_name: e.target.value }))} />
                 </div>
                 <div>
-                  <label htmlFor="">Apellido</label>
-                  <TextField value={client?.client_surname} onChange={(e) => setClient((prev) => ({ ...prev, client_surname: e.target.value }))} />
+                  <label>Apellido</label>
+                  <TextField
+                    error={client?.client_surname ? undefined : "Requerido"}
+                    value={client?.client_surname}
+                    onChange={(e) => setClient((prev) => ({ ...prev, client_surname: e.target.value }))}
+                  />
                 </div>
                 <div>
-                  <label htmlFor="">RUC</label>
-                  <TextField value={client?.client_RUC_DNI} onChange={(e) => setClient((prev) => ({ ...prev, client_RUC_DNI: e.target.value }))} />
+                  <label>RUC</label>
+                  <TextField
+                    error={client?.client_RUC_DNI ? undefined : "Requerido"}
+                    value={client?.client_RUC_DNI}
+                    onChange={(e) => setClient((prev) => ({ ...prev, client_RUC_DNI: e.target.value }))}
+                  />
                 </div>
               </div>
             </>

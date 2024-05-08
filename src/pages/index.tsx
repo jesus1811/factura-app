@@ -77,7 +77,7 @@ export default function Home() {
         <article className="flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
           <Title>Facturas</Title>
           <div className="flex w-full justify-between">
-            <p>Total ventas</p>
+            <p>Total</p>
             <p>S/{invoicesListTotal}</p>
           </div>
         </article>
@@ -90,7 +90,7 @@ export default function Home() {
         <article className="flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
           <Title>Boletas</Title>
           <div className="flex w-full justify-between">
-            <p>Total ventas</p>
+            <p>Total</p>
             <p>S/{receiptListTotal}</p>
           </div>
         </article>

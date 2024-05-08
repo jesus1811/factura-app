@@ -57,11 +57,14 @@ export function ModalEditCategory(props: IModalCreateCategory) {
       {!isModalDelete && (
         <Modal closeModal={closeModal} isModal={isModal} className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[31.25rem] flex flex-col px-6 py-9 gap-5">
           <Title>Editar categoria</Title>
-          <TextField value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
+          <div>
+            <p>Nombre</p>
+            <TextField error={formData?.name ? undefined : "requerido"} value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
+          </div>
           <div className="flex gap-2 items-center">
             <Button
+              isDisabled={!renderValidate()}
               onClick={() => {
-                if (!renderValidate()) return;
                 updateCategoryMutate({ ...formData });
               }}
             >

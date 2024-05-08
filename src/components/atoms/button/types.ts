@@ -6,4 +6,5 @@ export interface IButtonProps {
   isFull?: boolean;
   onClick?: () => void;
   variant?: TypeButton;
+  isDisabled?: boolean;
 }

@@ -25,8 +25,9 @@ export function ModalEditProduct(props: IModalCreateCategory) {
   });
 
   const renderValidate = () => {
-    if (formData?.name && formData?.price && formData?.stock) return true;
-    return false;
+    if (!formData?.name || !formData?.price?.toString() || !formData?.stock?.toString()) return false;
+    if (formData?.stock < 0 || formData?.price < 0) return false;
+    return true;
   };
 
   const { mutate: updateProductMutate } = useMutation({
@@ -58,13 +59,22 @@ export function ModalEditProduct(props: IModalCreateCategory) {
       {!isModalDelete && (
         <Modal closeModal={closeModal} isModal={isModal} className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[31.25rem] flex flex-col px-6 py-9 gap-5">
           <Title>Editar Producto</Title>
-          <TextField value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
-          <TextField value={formData?.price} onChange={handleChange} placeholder="cantidad" isFull type="number" name="price" />
-          <TextField value={formData?.stock} onChange={handleChange} placeholder="precio" isFull type="number" name="stock" />
+          <div>
+            <p>Nombre</p>
+            <TextField error={formData?.name ? undefined : "Requerido"} value={formData?.name} onChange={handleChange} placeholder="Nombre" isFull name="name" />
+          </div>
+          <div>
+            <p>Precio</p>
+            <TextField error={formData?.price.toString() ? undefined : "Requerido"} value={formData?.price} onChange={handleChange} placeholder="Precio" isFull type="number" name="price" />
+          </div>
+          <div>
+            <p>Cantidad</p>
+            <TextField error={formData?.stock.toString() ? undefined : "Requerido"} value={formData?.stock} onChange={handleChange} placeholder="Cantidad" isFull type="number" name="stock" />
+          </div>
           <div className="flex gap-2 items-center">
             <Button
+              isDisabled={!renderValidate()}
               onClick={() => {
-                if (!renderValidate()) return;
                 updateProductMutate({ ...formData });
               }}
             >

@@ -23,12 +23,10 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
   });
 
   const renderValidate = () => {
-    if (!formData?.name || !formData?.price || !formData?.stock) {
-      toast("faltan datos al crear el producto", { className: "!bg-alertError" });
+    if (!formData?.name || !formData?.price?.toString() || !formData?.stock?.toString()) {
       return false;
     }
     if (!formData?.category_id) {
-      toast("falta selecionar la categoria al crear", { className: "!bg-alertError" });
       return false;
     }
 
@@ -51,28 +49,42 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
     <>
       <Modal closeModal={closeModal} isModal={isModal} className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[31.25rem] flex flex-col px-6 py-9 gap-5">
         <Title>Agregar producto</Title>
-        <TextField value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
-        <TextField value={formData?.price} onChange={handleChange} placeholder="precio" isFull type="number" name="price" />
-        <TextField value={formData?.stock} onChange={handleChange} placeholder="cantidad" isFull type="number" name="stock" />
+        <div>
+          <p>Nombre</p>
+          <TextField error={formData?.name ? undefined : "Requerido"} value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
+        </div>
+        <div>
+          <p>Precio</p>
+          <TextField error={formData?.price?.toString() ? undefined : "Requerido"} value={formData?.price} onChange={handleChange} placeholder="precio" isFull type="number" name="price" />
+        </div>
+        <div>
+          <p>Cantidad</p>
+          <TextField error={formData?.stock?.toString() ? undefined : "Requerido"} value={formData?.stock} onChange={handleChange} placeholder="cantidad" isFull type="number" name="stock" />
+        </div>
+
         {isLoading && <Loader />}
         {!isLoading && (
-          <select
-            onChange={handleChange}
-            name="category_id"
-            id=""
-            className={classNames("bg-dark-50 px-3 h-[2.5rem] w-full  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none")}
-          >
-            <option value="">Selecciona una categoría</option>
-            {categories?.map((category) => (
-              <option key={category?.id} value={category?.id}>
-                {category?.name}
-              </option>
-            ))}
-          </select>
+          <>
+            <select
+              value={formData?.category_id}
+              onChange={handleChange}
+              name="category_id"
+              id=""
+              className={classNames("bg-dark-50 px-3 h-[2.5rem] w-full  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none")}
+            >
+              <option value="">Selecciona una categoría</option>
+              {categories?.map((category) => (
+                <option key={category?.id} value={category?.id}>
+                  {category?.name}
+                </option>
+              ))}
+            </select>
+            {!formData?.category_id?.toString() && <span className="text-sm text-[#ff6166] leading-5 block text-start">Requerido</span>}
+          </>
         )}
         <Button
+          isDisabled={!renderValidate()}
           onClick={() => {
-            if (!renderValidate()) return;
             addProductMutate({ ...formData });
           }}
         >

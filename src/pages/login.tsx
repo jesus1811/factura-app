@@ -2,13 +2,13 @@ import { Button, TextField, Title } from "@/components/atoms";
 import { loginUser } from "@/services";
 import { useTokenStore } from "@/store";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export function Login() {
   const { addToken } = useTokenStore();
 
-  const { mutate: loginUserMutate } = useMutation({
+  const { mutate: loginUserMutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
       if (!data) {
@@ -17,26 +17,31 @@ export function Login() {
       addToken(data?.owner?.token);
     },
   });
-  const [userForm, setUserForm] = useState("");
-  const [passwordForm, setPasswordForm] = useState("");
-
+  const [userForm, setUserForm] = useState("jesus1811");
+  const [passwordForm, setPasswordForm] = useState("1153259");
   return (
-    <section className="bg-dark-500 flex bg w-full justify-center items-center flex-col-reverse h-screen text-white">
-      <article className="rounded-lg border border-gray-500 py-5 px-5 gap-5 flex flex-col text-center w-full max-w-[300px]">
+    <section className="bg-dark-500 flex bg w-full justify-center items-center flex-col h-screen text-white">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!userForm || !passwordForm) return;
+          loginUserMutate({ user: userForm, password: passwordForm });
+        }}
+        className="rounded-lg border border-gray-500 py-5 px-5 gap-5 flex flex-col text-center w-full max-w-[300px]"
+      >
         <Title>Login</Title>
         <div className="w-full flex flex-col items-start">
           <label htmlFor="">Usuario</label>
-          <TextField isFull value={userForm} onChange={(e) => setUserForm(e.target.value)} />
+          <TextField error={!passwordForm ? "Falta agregar usuario" : undefined} isFull value={userForm} onChange={(e) => setUserForm(e.target.value)} />
         </div>
         <div className="w-full flex flex-col items-start">
           <label htmlFor="">Contraseña</label>
-          <TextField isFull value={passwordForm} onChange={(e) => setPasswordForm(e.target.value)} type="password" />
+          <TextField error={!passwordForm ? "Falta agregar contraseña" : undefined} isFull value={passwordForm} onChange={(e) => setPasswordForm(e.target.value)} type="password" />
         </div>
-
-        <Button isFull onClick={() => loginUserMutate({ user: userForm, password: passwordForm })}>
+        <Button isDisabled={isPending} isFull>
           Ingresar
         </Button>
-      </article>
+      </form>
     </section>
   );
 }

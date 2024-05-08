@@ -23,7 +23,6 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
 
   const renderValidate = () => {
     if (!formData?.name) {
-      toast("faltan datos al crear la Categoria", { className: "!bg-alertError" });
       return false;
     }
     return true;
@@ -45,10 +44,13 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
     <>
       <Modal closeModal={closeModal} isModal={isModal} className="bg-black border-[0.0625rem] border-gray-500 rounded-lg w-full max-w-[31.25rem] flex flex-col px-6 py-9 gap-5">
         <Title>Agregar categoria</Title>
-        <TextField value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
+        <div>
+          <p>Nombre</p>
+          <TextField error={formData?.name ? undefined : "Requerido"} value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
+        </div>
         <Button
+          isDisabled={!renderValidate()}
           onClick={() => {
-            if (!renderValidate()) return;
             addCategoryMutate({ name: formData?.name });
           }}
         >
