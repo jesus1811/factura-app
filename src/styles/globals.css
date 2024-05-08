@@ -43,3 +43,6 @@
   opacity: 0.2;
   z-index: 9;
 }
+* {
+  overflow: hidden;
+}

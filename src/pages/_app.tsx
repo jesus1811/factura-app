@@ -37,34 +37,28 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [token]);
 
-  const handleOrientationChange = () => {
-    if (window.orientation === 90 || window.orientation === -90) {
-      setIsVertical(false);
-    } else {
-      setIsVertical(true);
-    }
+  const handleResize = () => {
+    setIsVertical(window.innerHeight > window.innerWidth);
   };
 
   useEffect(() => {
-    handleOrientationChange();
-    handleOrientationChange();
-    window.addEventListener("orientationchange", handleOrientationChange);
+    handleResize();
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("orientationchange", handleOrientationChange);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <h1> debug isVertical {JSON.stringify(isVertical)}</h1>
       {!isVertical ? (
         <>
           <Component {...pageProps} />
           <Toaster invert duration={2000} />
         </>
       ) : (
-        <section className="bg-dark-500 flex bg w-full justify-center items-center flex-col-reverse h-screen text-white">
-          <Title>rote el celular para acceder al sistema</Title>
+        <section className="bg-dark-500 flex  w-full justify-center items-center flex-col-reverse h-screen text-white px-3">
+          <Title className="text-center !text-2xl">rote el celular para acceder al sistema</Title>
         </section>
       )}
     </QueryClientProvider>
