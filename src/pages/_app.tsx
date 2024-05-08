@@ -1,3 +1,4 @@
+import { Title } from "@/components/atoms";
 import { useTokenStore } from "@/store";
 import "@/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,6 +10,7 @@ import { Toaster } from "sonner";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { loadStore, token } = useTokenStore();
+  const [isVertical, setIsVertical] = useState(false);
   const pathname = usePathname();
   const [queryClient] = useState(
     () =>
@@ -35,11 +37,30 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [token]);
 
+  const handleOrientationChange = () => {
+    if (window.orientation === 90 || window.orientation === -90) {
+      setIsVertical(true);
+    } else {
+      setIsVertical(false);
+    }
+  };
+
+  useEffect(() => {
+    handleOrientationChange();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <h1>{JSON.stringify(pathname === "/login")}</h1> */}
-      <Component {...pageProps} />
-      <Toaster invert duration={2000} />
+      {!isVertical ? (
+        <>
+          <Component {...pageProps} />
+          <Toaster invert duration={2000} />
+        </>
+      ) : (
+        <section className="bg-dark-500 flex bg w-full justify-center items-center flex-col-reverse h-screen text-white">
+          <Title>rote el celular para acceder al sistema</Title>
+        </section>
+      )}
     </QueryClientProvider>
   );
 }
