@@ -13,8 +13,11 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
     mutationFn: deleteInvoice,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
-      toast("Eliminado eliminada correctamente", { className: "!bg-primary-500" });
+      toast("Venta eliminada correctamente", { className: "!bg-primary-500" });
       closeModal();
+    },
+    onError: () => {
+      toast("Error al eliminar venta", { className: "!bg-alertError" });
     },
   });
 

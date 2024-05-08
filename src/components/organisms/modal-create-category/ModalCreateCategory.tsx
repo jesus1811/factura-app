@@ -16,6 +16,9 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
       closeModal();
       toast("Categoria creada correctamente", { className: "!bg-primary-500" });
     },
+    onError: () => {
+      toast("Error al crear categoria", { className: "!bg-alertError" });
+    },
   });
 
   const renderValidate = () => {

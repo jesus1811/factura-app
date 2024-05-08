@@ -19,6 +19,9 @@ export function ModalEditProduct(props: IModalCreateCategory) {
       setIsModalDelete(false);
       toast("Producto eliminado correctamente", { className: "!bg-primary-500" });
     },
+    onError: () => {
+      toast("Error al eliminar producto", { className: "!bg-alertError" });
+    },
   });
 
   const renderValidate = () => {
@@ -33,8 +36,8 @@ export function ModalEditProduct(props: IModalCreateCategory) {
       closeModal();
       toast("Producto actualizado correctamente", { className: "!bg-primary-500" });
     },
-    onError: (error) => {
-      console.error("Error updateCategoryMutate", error);
+    onError: () => {
+      toast("Error al editar producto", { className: "!bg-alertError" });
     },
   });
 

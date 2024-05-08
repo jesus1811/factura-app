@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://wajclqwuvmpszahaxxux.supabase.co/rest/v1", // URL de tu API
+  baseURL: "https://wajclqwuvmpszahaxxux.supabase.co/rest/v1",
   headers: {
     "Content-Type": "application/json",
     Authorization:

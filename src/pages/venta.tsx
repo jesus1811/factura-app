@@ -17,8 +17,11 @@ export function Venta() {
     mutationFn: addInvoice,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
-      toast("Compra realizada correctamente", { className: "!bg-primary-500" });
+      toast("Venta realizada correctamente", { className: "!bg-primary-500" });
       clearStorage();
+    },
+    onError: () => {
+      toast("Error al realizar venta", { className: "!bg-alertError" });
     },
   });
   const [search, setSearch] = useState<string>("");

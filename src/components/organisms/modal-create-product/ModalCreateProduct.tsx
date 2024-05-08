@@ -17,6 +17,9 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
       closeModal();
       toast("Producto creado correctamente", { className: "!bg-primary-500" });
     },
+    onError: () => {
+      toast("Error al crear producto", { className: "!bg-alertError" });
+    },
   });
 
   const renderValidate = () => {

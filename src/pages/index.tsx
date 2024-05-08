@@ -36,7 +36,7 @@ export default function Home() {
   const receiptList = invoices
     ?.filter((invoice) => invoice.type === TypeShop.Receipt)
     ?.map((invoice) => ({ time: moment.utc(invoice?.created_at).local().format("YYYY-MM-DD"), value: invoice?.total }));
-  const receiptListTotal = invoicesList.reduce((total, invoice) => total + invoice.value, 0);
+  const receiptListTotal = receiptList.reduce((total, invoice) => total + invoice.value, 0);
 
   return (
     <Layout>

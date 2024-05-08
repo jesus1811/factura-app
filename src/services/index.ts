@@ -7,3 +7,5 @@ export * from "./product/queries";
 export * from "./product/types";
 export * from "./product/mutations";
 export * from "./category/mutations";
+export * from "./user/queries";
+export * from "./user/types";
