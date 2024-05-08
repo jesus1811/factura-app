@@ -12,7 +12,7 @@ export function SideBar(props: SideBarProps) {
   };
   return (
     <aside
-      className={classNames("relative right-0 border border-gray-500 text-white bg-dark-500  h-screen xl:flex xl:flex-col  duration-300     z-20", {
+      className={classNames(" right-0 border border-gray-500 text-white bg-dark-500 sticky top-0 left-0  h-screen flex flex-col  duration-300     z-20", {
         "w-[145px]": !isSidebar,
         "w-72": isSidebar,
       })}
