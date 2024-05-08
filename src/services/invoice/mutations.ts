@@ -4,10 +4,10 @@ import { getProductDetail } from "../product/queries";
 import { getUser } from "../user/queries";
 import { DTOCreateInvoiceDetail, DTOCreateInvoice, IInvoiceDetail } from "./types";
 
-const token = typeof window !== "undefined" ? (localStorage.getItem("access_token") as string) : "";
-
 export const addInvoice = async ({ invoiceDetails, invoice }: { invoiceDetails: DTOCreateInvoiceDetail[]; invoice: DTOCreateInvoice }) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");
@@ -36,6 +36,8 @@ export const addInvoice = async ({ invoiceDetails, invoice }: { invoiceDetails: 
 
 export const deleteInvoice = async ({ invoiceDetails, invoiceId }: { invoiceId: string; invoiceDetails: IInvoiceDetail[] }) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");

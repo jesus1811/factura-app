@@ -2,10 +2,10 @@ import { axiosInstance } from "../axiosIntance";
 import { getUser } from "../user/queries";
 import { DTOCreateCategory, DTODeleteCategory, DTOEditCategory } from "./types";
 
-const token = typeof window !== "undefined" ? (localStorage.getItem("access_token") as string) : "";
-
 export const addCategory = async ({ name }: DTOCreateCategory) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");
@@ -22,6 +22,8 @@ export const addCategory = async ({ name }: DTOCreateCategory) => {
 
 export const deleteCategory = async ({ id }: DTODeleteCategory) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");
@@ -41,6 +43,8 @@ export const deleteCategory = async ({ id }: DTODeleteCategory) => {
 
 export const updateCategory = async ({ id, name }: DTOEditCategory) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");

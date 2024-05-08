@@ -2,10 +2,10 @@ import { axiosInstance } from "../axiosIntance";
 import { getUser } from "../user/queries";
 import { DTOCreateProduct, DTODeleteProduct, DTOEditProduct } from "./types";
 
-const token = typeof window !== "undefined" ? (localStorage.getItem("access_token") as string) : "";
-
 export const addProduct = async ({ name, price, stock, category_id }: DTOCreateProduct) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");
@@ -25,6 +25,8 @@ export const addProduct = async ({ name, price, stock, category_id }: DTOCreateP
 
 export const deleteProduct = async ({ id }: DTODeleteProduct) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");
@@ -43,6 +45,8 @@ export const deleteProduct = async ({ id }: DTODeleteProduct) => {
 
 export const updateProduct = async ({ id, name, price, stock }: DTOEditProduct) => {
   try {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");
