@@ -10,7 +10,7 @@ import { Toaster } from "sonner";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { loadStore, token } = useTokenStore();
-  const [isVertical, setIsVertical] = useState(false);
+  const [isVertical, setIsVertical] = useState(true);
   const pathname = usePathname();
   const [queryClient] = useState(
     () =>
@@ -39,14 +39,19 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const handleOrientationChange = () => {
     if (window.orientation === 90 || window.orientation === -90) {
-      setIsVertical(true);
-    } else {
       setIsVertical(false);
+    } else {
+      setIsVertical(true);
     }
   };
 
   useEffect(() => {
     handleOrientationChange();
+    handleOrientationChange();
+    window.addEventListener("orientationchange", handleOrientationChange);
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientationChange);
+    };
   }, []);
 
   return (
