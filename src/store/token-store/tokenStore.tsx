@@ -14,4 +14,10 @@ export const useTokenStore = create<State>((set) => ({
       return { token: { isLoading: false, value: localStorage.getItem("access_token") as string } };
     });
   },
+  deleteToken: () => {
+    set(() => {
+      localStorage.removeItem("access_token");
+      return { token: { isLoading: false, value: "" } };
+    });
+  },
 }));

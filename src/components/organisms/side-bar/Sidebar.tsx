@@ -1,9 +1,11 @@
+import { useTokenStore } from "@/store";
 import classNames from "classnames";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
 
 export function SideBar(props: SideBarProps) {
   const { routes, pathname } = props;
+  const { deleteToken } = useTokenStore();
   const [isSidebar, setIsSidebar] = useState<boolean>(true);
   const changeNavbar = () => {
     setIsSidebar(!isSidebar);
@@ -65,18 +67,18 @@ export function SideBar(props: SideBarProps) {
         </ul>
         <ul className="p-5">
           <li>
-            <Link
-              href="/"
-              className={classNames("flex  hover:bg-white hover:bg-opacity-10  rounded-md p-2 transition-colors", {
+            <button
+              className={classNames("flex w-full  hover:bg-white hover:bg-opacity-10  rounded-md p-2 transition-colors", {
                 "text-[12px] flex-col items-center gap-1": !isSidebar,
                 "gap-4": isSidebar,
               })}
+              onClick={deleteToken}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
               </svg>
               Salir
-            </Link>
+            </button>
           </li>
         </ul>
       </div>
