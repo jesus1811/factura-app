@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 export function Login() {
   const { addToken } = useTokenStore();
+  const [orentacion, setorentacion] = useState("");
 
   const { mutate: loginUserMutate } = useMutation({
     mutationFn: loginUser,
@@ -22,9 +23,9 @@ export function Login() {
 
   function handleOrientationChange() {
     if (window.orientation === 90 || window.orientation === -90) {
-      alert("horentacion 1");
+      setorentacion("horentacion 1");
     } else {
-      alert("horentacion 2");
+      setorentacion("horentacion 2");
     }
   }
   useEffect(() => {
@@ -35,7 +36,7 @@ export function Login() {
   return (
     <section className="bg-dark-500 flex bg w-full justify-center items-center flex-col-reverse h-screen text-white">
       <article className="rounded-lg border border-gray-500 py-5 px-5 gap-5 flex flex-col text-center w-full max-w-[300px]">
-        <Title>Login</Title>
+        <Title>Login {orentacion}</Title>
         <div className="w-full flex flex-col items-start">
           <label htmlFor="">Usuario</label>
           <TextField isFull value={userForm} onChange={(e) => setUserForm(e.target.value)} />
