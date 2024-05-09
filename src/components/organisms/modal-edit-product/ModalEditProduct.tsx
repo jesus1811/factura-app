@@ -30,6 +30,12 @@ export function ModalEditProduct(props: IModalCreateCategory) {
     return true;
   };
 
+  const renderValidateDismint = () => {
+    if (!aument) return false;
+    if (aument > Number(product?.stock)) return false;
+    return true;
+  };
+
   const { mutate: updateProductMutate } = useMutation({
     mutationFn: updateProduct,
     onSuccess: () => {
@@ -65,11 +71,27 @@ export function ModalEditProduct(props: IModalCreateCategory) {
           </div>
           <div>
             <p>Precio</p>
-            <TextField error={formData?.price.toString() ? undefined : "Requerido"} value={formData?.price} onChange={handleChange} placeholder="Precio" isFull type="number" name="price" />
+            <TextField
+              error={formData?.price.toString() ? undefined : "Requerido"}
+              value={formData?.price?.toString()}
+              onChange={handleChange}
+              placeholder="Precio"
+              isFull
+              type="number"
+              name="price"
+            />
           </div>
           <div>
             <p>Cantidad</p>
-            <TextField error={formData?.stock.toString() ? undefined : "Requerido"} value={formData?.stock} onChange={handleChange} placeholder="Cantidad" isFull type="number" name="stock" />
+            <TextField
+              error={formData?.stock.toString() ? undefined : "Requerido"}
+              value={formData?.stock?.toString()}
+              onChange={handleChange}
+              placeholder="Cantidad"
+              isFull
+              type="number"
+              name="stock"
+            />
           </div>
           <div className="flex gap-2 items-center">
             <Button
@@ -86,7 +108,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
             </Button>
           </div>
           <div className="flex gap-2 items-center">
-            <TextField value={aument} onChange={(e) => setAument(Number(e?.target?.value))} placeholder="aumentar/disminuir" isFull type="number" name="stock" />
+            <TextField value={aument?.toString()} onChange={(e) => setAument(Number(e?.target?.value))} placeholder="aumentar/disminuir" isFull type="number" name="stock" />
             <Button
               onClick={() => {
                 if (!renderValidate()) return;
@@ -96,8 +118,8 @@ export function ModalEditProduct(props: IModalCreateCategory) {
               Aumentar + {aument}
             </Button>
             <Button
+              isDisabled={!renderValidateDismint()}
               onClick={() => {
-                if (!renderValidate()) return;
                 updateProductMutate({ ...formData, stock: formData?.stock - (aument || 0) });
               }}
             >

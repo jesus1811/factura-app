@@ -55,11 +55,19 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
         </div>
         <div>
           <p>Precio</p>
-          <TextField error={formData?.price?.toString() ? undefined : "Requerido"} value={formData?.price} onChange={handleChange} placeholder="precio" isFull type="number" name="price" />
+          <TextField error={formData?.price?.toString() ? undefined : "Requerido"} value={formData?.price?.toString()} onChange={handleChange} placeholder="precio" isFull type="number" name="price" />
         </div>
         <div>
           <p>Cantidad</p>
-          <TextField error={formData?.stock?.toString() ? undefined : "Requerido"} value={formData?.stock} onChange={handleChange} placeholder="cantidad" isFull type="number" name="stock" />
+          <TextField
+            error={formData?.stock?.toString() ? undefined : "Requerido"}
+            value={formData?.stock?.toString()}
+            onChange={handleChange}
+            placeholder="cantidad"
+            isFull
+            type="number"
+            name="stock"
+          />
         </div>
 
         {isLoading && <Loader />}

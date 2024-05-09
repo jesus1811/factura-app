@@ -66,7 +66,7 @@ export function Venta() {
   const rows: IRows[] = cart?.map((product) => ({
     ...product,
     category: product?.category?.name,
-    count: <TextField value={product?.count} onChange={(e) => changeProduct({ ...product, count: Number(e.currentTarget.value) })} placeholder="cantidad" />,
+    count: <TextField value={product?.count?.toString()} onChange={(e) => changeProduct({ ...product, count: Number(e.currentTarget.value) })} placeholder="cantidad" />,
     Total: Number(product?.price) * product?.count,
     settings: (
       <button className="ml-5" onClick={() => deleteProduct(product)}>
@@ -102,14 +102,14 @@ export function Venta() {
             </datalist>
             <div>
               <label htmlFor="">Precio</label>
-              <TextField type="number" value={productFind ? productPrice : ""} onChange={(e) => setProductPrice(Number(e.currentTarget?.value))} />
+              <TextField type="number" value={productFind ? productPrice?.toString() : ""} onChange={(e) => setProductPrice(Number(e.currentTarget?.value))} />
             </div>
             <div>
               <label htmlFor="">Cantidad</label>
               <TextField
                 type="number"
                 error={productFind && Number(productFind?.stock || 0) < productCount ? "No hay stock en el inventario" : undefined}
-                value={productFind ? productCount : ""}
+                value={productFind ? productCount?.toString() : ""}
                 onChange={(e) => setProducCount(Number(e.currentTarget?.value))}
               />
             </div>
