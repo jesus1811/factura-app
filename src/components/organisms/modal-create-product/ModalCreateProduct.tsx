@@ -1,4 +1,4 @@
-import { Button, Loader, Modal, TextField, Title } from "@/components/atoms";
+import { Button, Icon, Loader, Modal, TextField, Title } from "@/components/atoms";
 import { DTOCreateProduct, addProduct, getAllCategories } from "@/services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -89,9 +89,7 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
           }}
         >
           Agregar
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 aspect-square">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <Icon variant="add" />
         </Button>
       </Modal>
     </>

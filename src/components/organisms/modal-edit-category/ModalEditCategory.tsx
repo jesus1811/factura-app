@@ -1,4 +1,4 @@
-import { Button, Modal, TextField, Title } from "@/components/atoms";
+import { Button, Icon, Modal, TextField, Title } from "@/components/atoms";
 import { DTOEditCategory, deleteCategory, updateCategory } from "@/services";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -69,9 +69,7 @@ export function ModalEditCategory(props: IModalCreateCategory) {
               }}
             >
               Editar
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 aspect-square">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <Icon variant="edit" />
             </Button>
             <Button variant="Alert" onClick={() => setIsModalDelete(true)}>
               Eliminar

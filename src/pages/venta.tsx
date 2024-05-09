@@ -1,4 +1,4 @@
-import { Button, Loader, TextField, Title } from "@/components/atoms";
+import { Button, Icon, Loader, TextField, Title } from "@/components/atoms";
 import { DataTable, IRows, Icolumns } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { IInvoiceMethod, TypeShop, addInvoice, getAllProducts, getInvoiceMethods } from "@/services";
@@ -70,13 +70,7 @@ export function Venta() {
     Total: Number(product?.price) * product?.count,
     settings: (
       <button className="ml-5" onClick={() => deleteProduct(product)}>
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
-          />
-        </svg>
+        <Icon variant="delete" />
       </button>
     ),
   }));
@@ -130,9 +124,7 @@ export function Venta() {
                 }}
               >
                 Agregar
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 aspect-square">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <Icon variant="add" />
               </Button>
             )}
           </div>
