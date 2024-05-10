@@ -10,12 +10,13 @@ import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 export function Venta() {
   const { cart, addCart, loadStore, clearStorage, changeProduct, deleteProduct } = useCartStore();
-  const { data: products = [] } = useQuery({ queryKey: ["getAllProducts"], queryFn: getAllProducts });
+  const { data: products = [] } = useQuery({ queryKey: ["getAllProducts"], queryFn: () => getAllProducts({}) });
   const { data: methods, isLoading } = useQuery({ queryKey: ["getInvoiceMethods"], queryFn: getInvoiceMethods });
   const queryClient = useQueryClient();
   const { mutate: addInvoiceMutate } = useMutation({
     mutationFn: addInvoice,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllInvoicesToday"] });
       queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
       toast("Venta realizada correctamente", { className: "!bg-primary-500" });
       clearStorage();
@@ -94,11 +95,13 @@ export function Venta() {
           <div className="flex gap-4 items-end w-full">
             <TextField className="w-[400px]" list="products" value={search} placeholder="Buscar producto" onChange={(event) => setSearch(event.currentTarget.value)} />
             <datalist id="products">
-              {products?.map((product) => (
-                <option key={product?.id} value={product?.name}>
-                  {product?.id}
-                </option>
-              ))}
+              {products
+                ?.filter((product) => Number(product?.stock || 0) !== 0)
+                .map((product) => (
+                  <option key={product?.id} value={product?.name}>
+                    {product?.id}
+                  </option>
+                ))}
             </datalist>
             <div>
               <label htmlFor="">Precio</label>

@@ -26,3 +26,9 @@ export interface DTOEditProduct {
   stock: number;
   price: number;
 }
+
+export interface IFilter {
+  category_id?: string;
+  name?: string;
+  id?: string;
+}

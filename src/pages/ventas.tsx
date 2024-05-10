@@ -1,14 +1,14 @@
 import { Button, Icon, Loader, TextField } from "@/components/atoms";
 import { DataTable, IRows, Icolumns, ModalInvoiceDetail } from "@/components/organisms";
 import { Layout } from "@/components/templates";
-import { getAllInvoices } from "@/services";
+import { getAllInvoicesToday } from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export function Facturas() {
-  const { data: invoices = [], isError, isLoading, isSuccess, refetch: refetchInvoices, isFetching } = useQuery({ queryKey: ["getAllInvoices"], queryFn: getAllInvoices });
+  const { data: invoices = [], isError, isLoading, isSuccess } = useQuery({ queryKey: ["getAllInvoicesToday"], queryFn: getAllInvoicesToday });
   const [search, setSearch] = useState<string>("");
   const [invoiceId, setInvoiceId] = useState<string>();
   const router = useRouter();
@@ -57,9 +57,6 @@ export function Facturas() {
         <Button onClick={() => router.push("/venta")}>
           Nueva venta
           <Icon variant="add" />
-        </Button>
-        <Button isDisabled={isFetching} variant="outline" onClick={refetchInvoices}>
-          Refrescar
         </Button>
       </div>
 

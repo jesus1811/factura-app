@@ -10,7 +10,7 @@ export function Categorias() {
   const [isModalCreate, setIsModalCreate] = useState<boolean>(false);
   const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
   const [category, setCategory] = useState<ICategory>();
-  const { data: categories = [], isError, isLoading, isSuccess, refetch: refetchCategories, isFetching } = useQuery({ queryKey: ["getAllCategories"], queryFn: getAllCategories });
+  const { data: categories = [], isError, isLoading, isSuccess, refetch: refetchCategories } = useQuery({ queryKey: ["getAllCategories"], queryFn: getAllCategories });
 
   const columns: Icolumns[] = [
     { nameKey: "id", value: "Codigo" },
@@ -46,9 +46,6 @@ export function Categorias() {
           <Button onClick={() => setIsModalCreate(true)}>
             Agregar
             <Icon variant="add" />
-          </Button>
-          <Button isDisabled={isFetching} variant="outline" onClick={refetchCategories}>
-            Refrescar
           </Button>
         </div>
         {isError && <h1>error</h1>}
