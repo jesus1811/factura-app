@@ -34,7 +34,7 @@ export function Modal(props: IModalProps) {
           event.stopPropagation();
         }}
       >
-        <div onClick={closeModal} className=" cursor-pointer absolute right-3 top-3 fill-white bg-gray-500 rounded-full w-8 aspect-square flex justify-center items-center">
+        <div onClick={closeModal} className=" cursor-pointer absolute hover:bg-gray-600 right-3 top-3 fill-white bg-gray-500 rounded-full w-8 aspect-square flex justify-center items-center">
           <Icon variant="close" />
         </div>
         {children}

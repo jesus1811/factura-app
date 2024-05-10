@@ -47,6 +47,12 @@ export const updateProduct = async ({ id, name, price, stock }: DTOEditProduct) 
   try {
     const token = localStorage.getItem("access_token");
     if (!token) return;
+    if (stock < 0) {
+      throw new Error("Error");
+    }
+    if (price < 0) {
+      throw new Error("Error");
+    }
     const user = await getUser({ token });
     if (!user) {
       throw new Error("Error");

@@ -30,12 +30,6 @@ export function ModalEditProduct(props: IModalCreateCategory) {
     return true;
   };
 
-  const renderValidateDismint = () => {
-    if (!aument) return false;
-    if (aument > Number(product?.stock)) return false;
-    return true;
-  };
-
   const { mutate: updateProductMutate } = useMutation({
     mutationFn: updateProduct,
     onSuccess: () => {
@@ -110,15 +104,15 @@ export function ModalEditProduct(props: IModalCreateCategory) {
           <div className="flex gap-2 items-center">
             <TextField value={aument?.toString()} onChange={(e) => setAument(Number(e?.target?.value))} placeholder="aumentar/disminuir" isFull type="number" name="stock" />
             <Button
+              isDisabled={!aument || aument < 0}
               onClick={() => {
-                if (!renderValidate()) return;
                 updateProductMutate({ ...formData, stock: formData?.stock + (aument || 0) });
               }}
             >
               Aumentar + {aument}
             </Button>
             <Button
-              isDisabled={!renderValidateDismint()}
+              isDisabled={!aument || aument < 0}
               onClick={() => {
                 updateProductMutate({ ...formData, stock: formData?.stock - (aument || 0) });
               }}

@@ -1,3 +1,4 @@
+import { createClient } from "@supabase/supabase-js";
 import axios from "axios";
 
 export const axiosInstance = axios.create({
@@ -10,3 +11,8 @@ export const axiosInstance = axios.create({
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhamNscXd1dm1wc3phaGF4eHV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk2MjA4MjIsImV4cCI6MjAyNTE5NjgyMn0.BCQMbWRY7mjkIceoHRCE9W6Kzy0g8UL9KOZMCts9cXs",
   },
 });
+
+export const supabaseUrl = "https://wajclqwuvmpszahaxxux.supabase.co";
+export const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhamNscXd1dm1wc3phaGF4eHV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk2MjA4MjIsImV4cCI6MjAyNTE5NjgyMn0.BCQMbWRY7mjkIceoHRCE9W6Kzy0g8UL9KOZMCts9cXs";
+export const supabase = createClient(supabaseUrl, supabaseKey);

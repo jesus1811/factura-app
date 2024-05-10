@@ -65,6 +65,10 @@ export function Facturas() {
 
       {isError && <h1>error</h1>}
       {isLoading && <Loader />}
+      <p>
+        *nota: el sistema tendra un filtrado por fecha guiado por un calendario para que de esa manera pueda ver las venta de un dia especifico, por lo pronto soloe sta viendo las ventas del dia de
+        hoy- en desarrollo*
+      </p>
       {!isLoading && isSuccess && <DataTable columns={columns} rows={rows} className="mt-6" />}
       {invoiceId && <ModalInvoiceDetail invoiceId={invoiceId} closeModal={() => setisModalDetail(false)} isModal={isModalDetail} />}
     </Layout>

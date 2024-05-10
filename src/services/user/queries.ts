@@ -22,8 +22,7 @@ export const loginUser = async ({ user, password }: { user: string; password: st
 
 export const getUser = async ({ token }: { token: string }): Promise<IUser | undefined> => {
   try {
-    const response = await axiosInstance.get("/user", { params: { select: "*,owner:owner_id(token)", "owner.token": `eq.${token}` } });
-
+    const response = await axiosInstance.get("/owner", { params: { select: "token", token: `eq.${token}` } });
     if (response.status === 200 && response) return response.data?.[0];
   } catch (error) {
     throw new Error("Error");
