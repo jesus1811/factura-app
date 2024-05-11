@@ -94,7 +94,6 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
           <table className="mb-5 w-full">
             <thead>
               <tr>
-                <td>COD.</td>
                 <td>DESCR.</td>
                 <td>CANT.</td>
                 <td>P. UNIT.</td>
@@ -105,7 +104,6 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
             <tbody>
               {invoiceDetails?.map((invoiceDetail) => (
                 <tr key={invoiceDetail?.id}>
-                  <td>{invoiceDetail?.id}</td>
                   <td>{invoiceDetail?.product?.name}</td>
                   <td>{invoiceDetail?.stock}</td>
                   <td>{invoiceDetail?.price}</td>

@@ -1,11 +1,14 @@
 import { axiosInstance } from "../axiosIntance";
-import { IFilter, IProduct } from "./types";
+import { IFilterProduct, IProduct } from "./types";
 
-export const getAllProducts = async (filter: IFilter): Promise<IProduct[] | undefined> => {
+export const getAllProducts = async (filter: IFilterProduct): Promise<IProduct[] | undefined> => {
   try {
-    const { category_id, name, id } = filter;
+    const { category_id, name, id, currentPage = 1, totalPerPage = 999 } = filter;
     const token = localStorage.getItem("access_token");
     if (!token) return;
+
+    const startIndex = (currentPage - 1) * totalPerPage;
+    const endIndex = startIndex + totalPerPage - 1;
     const response = await axiosInstance.get("/product", {
       params: {
         select: "*,category:category_id(*)",
@@ -13,6 +16,9 @@ export const getAllProducts = async (filter: IFilter): Promise<IProduct[] | unde
         category_id: category_id ? `eq.${category_id}` : undefined,
         name: name ? `ilike.%${name}%` : undefined,
         id: id ? `eq.${id}` : undefined,
+      },
+      headers: {
+        range: `${startIndex}-${endIndex}`,
       },
     });
     if (response.status === 200 && response) return response.data as IProduct[];

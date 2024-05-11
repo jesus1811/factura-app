@@ -13,7 +13,7 @@ export function Venta() {
   const { data: products = [] } = useQuery({ queryKey: ["getAllProducts"], queryFn: () => getAllProducts({}) });
   const { data: methods, isLoading } = useQuery({ queryKey: ["getInvoiceMethods"], queryFn: getInvoiceMethods });
   const queryClient = useQueryClient();
-  const { mutate: addInvoiceMutate } = useMutation({
+  const { mutate: addInvoiceMutate, isPending } = useMutation({
     mutationFn: addInvoice,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getAllInvoicesToday"] });
@@ -43,14 +43,13 @@ export function Venta() {
 
   const renderValidateaddInvoice = () => {
     if (!cart || !total) {
-      // toast("No hay productos para vender", { className: "!bg-alertError" });
       return false;
     }
+    if (isPending) return false;
     if (typeShop === TypeShop?.Receipt) {
       return true;
     }
     if (!client?.client_name || !client?.client_surname || !client?.client_RUC_DNI) {
-      // toast("Faltan datos del cliente", { className: "!bg-alertError" });
       return false;
     }
     return true;
@@ -174,7 +173,9 @@ export function Venta() {
         </div>
         <div className="h-full w-[1px]  bg-gray-500" />
         <div className="w-full max-w-[18.75rem] h-full">
-          <Title>{typeShop}</Title>
+          <Title>
+            {typeShop} {JSON.stringify(isPending)}
+          </Title>
           <div className="w-full my-5 flex flex-col items-start">
             <label>Tipo de venta</label>
             <select

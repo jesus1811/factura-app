@@ -12,7 +12,7 @@ const config: Config = {
         alertError: "#CC525F",
         current: "currentColor",
         dark: {
-          500: "#000000",
+          500: "#020202",
           100: "#111111",
           50: "#0A0A0A",
         },

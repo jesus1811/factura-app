@@ -52,3 +52,11 @@ export interface IInvoiceMethod {
   created_at: string;
   name: string;
 }
+
+export interface IFilterInvoice {
+  id?: string;
+  type?: TypeShop;
+  currentPage?: number;
+  invoice_method_id?: string;
+  totalPerPage?: number;
+}

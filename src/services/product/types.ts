@@ -27,8 +27,10 @@ export interface DTOEditProduct {
   price: number;
 }
 
-export interface IFilter {
+export interface IFilterProduct {
   category_id?: string;
   name?: string;
   id?: string;
+  currentPage?: number;
+  totalPerPage?: number;
 }

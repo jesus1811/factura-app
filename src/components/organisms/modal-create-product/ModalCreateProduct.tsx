@@ -9,7 +9,7 @@ import { toast } from "sonner";
 export function ModalCreateProduct(props: IModalCreateProduct) {
   const { refetch, closeModal, isModal } = props;
   const [formData, setFormData] = useState<DTOCreateProduct>({} as DTOCreateProduct);
-  const { data: categories = [], isLoading } = useQuery({ queryKey: ["getAllCategories"], queryFn: getAllCategories, enabled: isModal });
+  const { data: categories = [], isLoading } = useQuery({ queryKey: ["getAllCategories"], queryFn: () => getAllCategories({}), enabled: isModal });
   const { mutate: addProductMutate } = useMutation({
     mutationFn: addProduct,
     onSuccess: () => {

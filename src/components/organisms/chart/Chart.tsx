@@ -7,7 +7,7 @@ export function Chart(props: IChartProps) {
   const chartContainerRef = useRef<any>();
 
   const colors = {
-    backgroundColor: "#000000",
+    backgroundColor: "#020202",
     lineColor: "#5A57EE",
     textColor: "white",
     areaTopColor: "#5A57EE",

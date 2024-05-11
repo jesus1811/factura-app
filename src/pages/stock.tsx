@@ -2,22 +2,28 @@ import { Button, Error, Icon, Loader, TextField } from "@/components/atoms";
 import { DataTable, IRows, Icolumns, ModalCreateProduct } from "@/components/organisms";
 import ModalEditProduct from "@/components/organisms/modal-edit-product/ModalEditProduct";
 import { Layout } from "@/components/templates";
-import { IFilter, IProduct, getAllCategories, getAllProducts } from "@/services";
+import { IFilterProduct, IProduct, getAllCategories, getAllProducts } from "@/services";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 
 import { ChangeEvent, useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
+import { useDebounce } from "use-debounce";
 export function Productos() {
-  const [filter, setFilter] = useState<IFilter>({} as IFilter);
+  const [filter, setFilter] = useState<IFilterProduct>({} as IFilterProduct);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [debouncedText] = useDebounce(filter, 500);
   const {
     data: products = [],
     isLoading,
     isSuccess,
     refetch: refetchProducts,
-  } = useQuery({ queryKey: ["getAllProducts"], queryFn: () => getAllProducts({ category_id: filter?.category_id, name: filter?.name, id: filter?.id }), placeholderData: keepPreviousData });
+  } = useQuery({
+    queryKey: ["getAllProducts", currentPage, debouncedText],
+    queryFn: () => getAllProducts({ category_id: filter?.category_id, name: filter?.name, id: filter?.id, currentPage, totalPerPage: 8 }),
+    placeholderData: keepPreviousData,
+  });
 
-  const { data: categories = [] } = useQuery({ queryKey: ["getAllCategories"], queryFn: getAllCategories });
+  const { data: categories = [] } = useQuery({ queryKey: ["getAllCategories"], queryFn: () => getAllCategories({}) });
 
   const [isFilter, setisFilter] = useState<boolean>(false);
 
@@ -49,8 +55,6 @@ export function Productos() {
     ),
   }));
 
-  const debounce = useDebouncedCallback(refetchProducts, 500);
-
   const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
     setFilter({
@@ -71,15 +75,21 @@ export function Productos() {
           Agregar
           <Icon variant="add" />
         </Button>
-        <Button variant="outline" onClick={() => setisFilter((prev) => !prev)}>
+        <Button
+          variant="outline"
+          onClick={() =>
+            setisFilter((prev) => {
+              if (prev) {
+                setFilter({});
+              }
+              return !prev;
+            })
+          }
+        >
           {isFilter ? "Cerrar filtros" : "Mostrar filtros"}
         </Button>
       </div>
-      {isLoading && (
-        <div className="mt-6">
-          <Loader />
-        </div>
-      )}
+
       {isFilter && (
         <div className="flex gap-2 items-end mt-6">
           <div>
@@ -87,9 +97,9 @@ export function Productos() {
             <TextField
               value={filter?.id}
               name="id"
-              onChange={(event) => {
-                handleChange(event);
-                debounce();
+              onChange={(e) => {
+                handleChange(e);
+                setCurrentPage(1);
               }}
             />
           </div>
@@ -98,18 +108,26 @@ export function Productos() {
             <TextField
               value={filter?.name}
               name="name"
-              onChange={(event) => {
-                handleChange(event);
-                debounce();
+              list="products"
+              onChange={(e) => {
+                handleChange(e);
+                setCurrentPage(1);
               }}
             />
+            <datalist id="products">
+              {products?.map((product) => (
+                <option key={product?.id} value={product?.name}>
+                  {product?.id}
+                </option>
+              ))}
+            </datalist>
           </div>
           <div>
             <select
               value={filter?.category_id}
-              onChange={(event) => {
-                handleChange(event);
-                debounce();
+              onChange={(e) => {
+                handleChange(e);
+                setCurrentPage(1);
               }}
               name="category_id"
               id=""
@@ -127,8 +145,26 @@ export function Productos() {
           </div>
         </div>
       )}
-      {!isSuccess && <Error />}
-      {!isLoading && isSuccess && <DataTable columns={columns} rows={rows} className="mt-6" />}
+      {isLoading && (
+        <div className="mt-6">
+          <Loader />
+        </div>
+      )}
+      {!isLoading && !isSuccess && <Error />}
+      {!isLoading && isSuccess && (
+        <>
+          <DataTable columns={columns} rows={rows} className="mt-6" />
+          <div className="flex gap-2 items-center w-full justify-end mt-5">
+            <Button isDisabled={currentPage <= 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
+              Atras
+            </Button>
+            <p>Pagina {currentPage}</p>
+            <Button isDisabled={products?.length === 0} onClick={() => setCurrentPage((prev) => prev + 1)}>
+              Siguiente
+            </Button>
+          </div>
+        </>
+      )}
       <ModalCreateProduct refetch={refetchProducts} closeModal={() => setIsModalCreate(false)} isModal={isModalCreate} />
       {product && <ModalEditProduct closeModal={() => setIsModalEdit(false)} isModal={isModalEdit} product={product} refetch={refetchProducts} />}
     </Layout>
