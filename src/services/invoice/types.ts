@@ -59,4 +59,5 @@ export interface IFilterInvoice {
   currentPage?: number;
   invoice_method_id?: string;
   totalPerPage?: number;
+  order?: "asc" | "desc";
 }

@@ -16,8 +16,8 @@ export function Venta() {
   const { mutate: addInvoiceMutate, isPending } = useMutation({
     mutationFn: addInvoice,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getAllInvoicesToday"] });
       queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllProducts"] });
       toast("Venta realizada correctamente", { className: "!bg-primary-500" });
       clearStorage();
     },
@@ -173,9 +173,7 @@ export function Venta() {
         </div>
         <div className="h-full w-[1px]  bg-gray-500" />
         <div className="w-full max-w-[18.75rem] h-full">
-          <Title>
-            {typeShop} {JSON.stringify(isPending)}
-          </Title>
+          <Title>{typeShop}</Title>
           <div className="w-full my-5 flex flex-col items-start">
             <label>Tipo de venta</label>
             <select

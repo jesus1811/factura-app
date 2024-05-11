@@ -1,7 +1,7 @@
 import { Button, Error, Icon, Loader, TextField } from "@/components/atoms";
 import { DataTable, IRows, Icolumns, ModalInvoiceDetail } from "@/components/organisms";
 import { Layout } from "@/components/templates";
-import { IFilterInvoice, TypeShop, getAllInvoicesToday, getInvoiceMethods } from "@/services";
+import { IFilterInvoice, TypeShop, getAllInvoices, getInvoiceMethods } from "@/services";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import moment from "moment";
@@ -20,7 +20,7 @@ export function Facturas() {
     isError,
     isLoading,
     isSuccess,
-  } = useQuery({ queryKey: ["getAllInvoicesToday", currentPage, debouncedText], queryFn: () => getAllInvoicesToday({ currentPage, totalPerPage: 8, ...filter }), placeholderData: keepPreviousData });
+  } = useQuery({ queryKey: ["getAllInvoices", currentPage, debouncedText], queryFn: () => getAllInvoices({ currentPage, totalPerPage: 8, ...filter }), placeholderData: keepPreviousData });
   const [search, setSearch] = useState<string>("");
   const [invoiceId, setInvoiceId] = useState<string>();
   const router = useRouter();
@@ -73,7 +73,6 @@ export function Facturas() {
   return (
     <Layout>
       <div className="w-full flex flex-wrap gap-2">
-        <TextField value={search} placeholder="Buscar" onChange={(event) => setSearch(event.currentTarget.value)} />
         <Button onClick={() => router.push("/venta")}>
           Nueva venta
           <Icon variant="add" />

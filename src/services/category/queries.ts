@@ -9,7 +9,7 @@ export const getAllCategories = async (filter: IFilterCategory): Promise<ICatego
     const startIndex = (currentPage - 1) * totalPerPage;
     const endIndex = startIndex + totalPerPage - 1;
     const response = await axiosInstance.get("/category", {
-      params: { select: "*", token: `eq.${token}`, name: name ? `ilike.%${name}%` : undefined, id: id ? `eq.${id}` : undefined },
+      params: { select: "*", token: `eq.${token}`, name: name ? `ilike.%${name}%` : undefined, id: id ? `eq.${id}` : undefined, order: "created_at.desc" },
       headers: {
         range: `${startIndex}-${endIndex}`,
       },

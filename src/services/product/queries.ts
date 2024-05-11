@@ -16,6 +16,7 @@ export const getAllProducts = async (filter: IFilterProduct): Promise<IProduct[]
         category_id: category_id ? `eq.${category_id}` : undefined,
         name: name ? `ilike.%${name}%` : undefined,
         id: id ? `eq.${id}` : undefined,
+        order: "create_at.desc",
       },
       headers: {
         range: `${startIndex}-${endIndex}`,

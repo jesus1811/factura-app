@@ -12,7 +12,7 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
   const { mutate: deleteInvoiceMutate } = useMutation({
     mutationFn: deleteInvoice,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getAllInvoices", "getAllInvoicesToday"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllInvoices"] });
       toast("Venta eliminada correctamente", { className: "!bg-primary-500" });
       closeModal();
     },

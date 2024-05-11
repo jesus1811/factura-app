@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
 export default function Home() {
-  const { data: invoices = [], isLoading } = useQuery({ queryKey: ["getAllInvoices"], queryFn: getAllInvoices });
+  const { data: invoices = [], isLoading } = useQuery({ queryKey: ["getAllInvoices"], queryFn: () => getAllInvoices({ order: "asc" }) });
 
   const profitsDay = invoices
     ?.map((invoice) => ({ ...invoice, created_at: moment.utc(invoice.created_at).format() }))
