@@ -1,69 +1,43 @@
-import { axiosInstance } from "../axiosIntance";
-import { getUser } from "../user/queries";
+import { getAxiosConfig } from "../axiosIntance";
 import { DTOCreateProduct, DTODeleteProduct, DTOEditProduct } from "./types";
 
 export const addProduct = async ({ name, price, stock, category_id }: DTOCreateProduct) => {
+  const axiosInstance = getAxiosConfig();
   try {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-    const user = await getUser({ token });
-    if (!user) {
-      throw new Error("Error");
-    }
     const response = await axiosInstance.post("/product", {
       name,
       price,
       stock,
       category_id,
-      token,
     });
     return response.data;
   } catch (error) {
-    throw new Error("Error");
+    throw error;
   }
 };
 
 export const deleteProduct = async ({ id }: DTODeleteProduct) => {
+  const axiosInstance = getAxiosConfig();
   try {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-    const user = await getUser({ token });
-    if (!user) {
-      throw new Error("Error");
-    }
-    const response = await axiosInstance.delete("/product", {
-      params: {
-        id: `eq.${id}`,
-        token: `eq.${token}`,
-      },
-    });
+    const response = await axiosInstance.delete("/product", { params: { id } });
     return response.data;
-  } catch (error) {
-    throw new Error("Error");
+  } catch (error: any) {
+    throw error;
   }
 };
 
 export const updateProduct = async ({ id, name, price, stock }: DTOEditProduct) => {
+  const axiosInstance = getAxiosConfig();
   try {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
     if (stock < 0) {
       throw new Error("Error");
     }
     if (price < 0) {
       throw new Error("Error");
     }
-    const user = await getUser({ token });
-    if (!user) {
-      throw new Error("Error");
-    }
-    const response = await axiosInstance.patch(`/product?id=eq.${id}&token=eq.${token}`, {
-      name,
-      price,
-      stock,
-    });
+    const response = await axiosInstance.patch("/product", { name, price, stock }, { params: { id } });
     return response.data;
   } catch (error) {
-    throw new Error("Error");
+    throw error;
   }
 };

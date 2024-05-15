@@ -1,15 +1,19 @@
-import { useTokenStore } from "@/store";
+import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames";
+import { serialize } from "cookie";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ReactNode, useState } from "react";
 
 export function SideBar(props: SideBarProps) {
   const { routes, pathname } = props;
-  const { deleteToken } = useTokenStore();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [isSidebar, setIsSidebar] = useState<boolean>(true);
   const changeNavbar = () => {
     setIsSidebar(!isSidebar);
   };
+
   return (
     <aside
       className={classNames(" right-0 border border-gray-500 text-white bg-dark-500 sticky top-0 left-0  h-screen flex flex-col  duration-300     z-20", {
@@ -72,7 +76,11 @@ export function SideBar(props: SideBarProps) {
                 "text-[12px] flex-col items-center gap-1": !isSidebar,
                 "gap-4": isSidebar,
               })}
-              onClick={deleteToken}
+              onClick={() => {
+                document.cookie = serialize("access_token", "", { maxAge: -1 });
+                queryClient.clear();
+                router.push("/login");
+              }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />

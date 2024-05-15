@@ -17,11 +17,10 @@ export function Facturas() {
   const { data: methods } = useQuery({ queryKey: ["getInvoiceMethods"], queryFn: getInvoiceMethods });
   const {
     data: invoices = [],
-    isError,
     isLoading,
     isSuccess,
   } = useQuery({ queryKey: ["getAllInvoices", currentPage, debouncedText], queryFn: () => getAllInvoices({ currentPage, totalPerPage: 8, ...filter }), placeholderData: keepPreviousData });
-  const [search, setSearch] = useState<string>("");
+
   const [invoiceId, setInvoiceId] = useState<string>();
   const router = useRouter();
   const [isModalDetail, setisModalDetail] = useState<boolean>(false);
@@ -36,11 +35,6 @@ export function Facturas() {
     { nameKey: "settings", value: "" },
   ];
 
-  const invoicesSearh = invoices.filter(
-    (invoice) =>
-      invoice.id.toLowerCase().includes(search.toLowerCase()) || invoice.type.toLowerCase().includes(search.toLowerCase()) || invoice.invoice_method?.name.toLowerCase().includes(search.toLowerCase())
-  );
-
   const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
     setFilter({
@@ -49,7 +43,7 @@ export function Facturas() {
     });
   };
 
-  const rows: IRows[] = invoicesSearh?.map((invoice) => ({
+  const rows: IRows[] = invoices?.map((invoice) => ({
     ...invoice,
     invoice_method: invoice?.invoice_method?.name,
     created_at: moment.utc(invoice?.created_at).local().format("D [de] MMMM [del] YYYY [a las] h:mm a"),
@@ -156,20 +150,17 @@ export function Facturas() {
         </div>
       )}
       {!isLoading && !isSuccess && <Error />}
-      {/* <p>
-        *nota: el sistema tendra un filtrado por fecha guiado por un calendario para que de esa manera pueda ver las venta de un dia especifico, por lo pronto soloe sta viendo las ventas del dia de
-        hoy- en desarrollo*
-      </p> */}
+
       {!isLoading && isSuccess && (
         <>
           <DataTable columns={columns} rows={rows} className="mt-6" />
           <div className="flex gap-2 items-center w-full justify-end mt-5">
             <Button isDisabled={currentPage <= 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-              Atras
+              <Icon variant="prev" />
             </Button>
             <p>Pagina {currentPage}</p>
             <Button isDisabled={invoices?.length === 0} onClick={() => setCurrentPage((prev) => prev + 1)}>
-              Siguiente
+              <Icon variant="next" />
             </Button>
           </div>
         </>

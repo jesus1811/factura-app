@@ -156,11 +156,11 @@ export function Productos() {
           <DataTable columns={columns} rows={rows} className="mt-6" />
           <div className="flex gap-2 items-center w-full justify-end mt-5">
             <Button isDisabled={currentPage <= 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-              Atras
+              <Icon variant="prev" />
             </Button>
             <p>Pagina {currentPage}</p>
             <Button isDisabled={products?.length === 0} onClick={() => setCurrentPage((prev) => prev + 1)}>
-              Siguiente
+              <Icon variant="next" />
             </Button>
           </div>
         </>

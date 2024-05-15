@@ -44,7 +44,7 @@ export default function Home() {
         <div className={`bg-[#328651] rounded-md h-fit`}>
           <div className={`icon_money p-5`}>
             <h2 className="font-bold mb-5 text-2xl">S/{profitsDay}</h2>
-            <p>Ganancias del día </p>
+            <p>Ganancias del día</p>
           </div>
         </div>
         <div className={`bg-[#2d788b] rounded-md h-fit`}>

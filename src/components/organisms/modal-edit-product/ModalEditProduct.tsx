@@ -19,7 +19,9 @@ export function ModalEditProduct(props: IModalCreateCategory) {
       setIsModalDelete(false);
       toast("Producto eliminado correctamente", { className: "!bg-primary-500" });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.log("debug-error", error.response.status);
+      if (error.response.status === 409) return toast("este recurso esta en uso prohibido eliminar", { className: "!bg-alertError" });
       toast("Error al eliminar producto", { className: "!bg-alertError" });
     },
   });

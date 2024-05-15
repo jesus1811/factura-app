@@ -1,31 +1,16 @@
-import moment from "moment";
-import { axiosInstance } from "../axiosIntance";
+import { getAxiosConfig } from "../axiosIntance";
 import { IFilterInvoice, IInvoice, IInvoiceDetail, IInvoiceMethod } from "./types";
 
 export const getAllInvoices = async (filter: IFilterInvoice): Promise<IInvoice[] | undefined> => {
+  const axiosInstance = getAxiosConfig();
   try {
     const { id, invoice_method_id, type, currentPage = 1, totalPerPage = 999, order = "desc" } = filter;
     // const todayLocal = moment.utc().local().startOf("day").format("YYYY-MM-DD HH:mm:ss.SSSSSSZ");
     // const todayMidnight = moment.utc(todayLocal).local().endOf("day").format("YYYY-MM-DD HH:mm:ss.SSSSSSZ");
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
 
-    const startIndex = (currentPage - 1) * totalPerPage;
-    const endIndex = startIndex + totalPerPage - 1;
     // const response = await axiosInstance.get(`/invoice?created_at=gte.${todayLocal}&created_at=lt.${todayMidnight}`,
-    const response = await axiosInstance.get(`/invoice`, {
-      params: {
-        select: "*,invoice_method:invoice_method_id(*)",
-        token: `eq.${token}`,
-        invoice_method_id: invoice_method_id ? `eq.${invoice_method_id}` : undefined,
-        type: type ? `ilike.%${type}%` : undefined,
-        id: id ? `eq.${id}` : undefined,
-        order: `created_at.${order}`,
-      },
-      headers: {
-        range: `${startIndex}-${endIndex}`,
-      },
-    });
+
+    const response = await axiosInstance.get("/invoice", { params: { id, invoice_method_id, currentPage, order, type, totalPerPage } });
     if (response.status === 200 && response) return response?.data;
   } catch (error) {
     console.error(error);
@@ -33,12 +18,9 @@ export const getAllInvoices = async (filter: IFilterInvoice): Promise<IInvoice[]
 };
 
 export const getInvoiceDetails = async ({ invoiceId }: { invoiceId: string }): Promise<IInvoiceDetail[] | undefined> => {
+  const axiosInstance = getAxiosConfig();
   try {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-    const response = await axiosInstance.get("/invoice_detail", {
-      params: { select: "*,invoice:invoice_id(*,invoice_method:invoice_method_id(*)),product:product_id(*)", invoice_id: `eq.${invoiceId}`, token: `eq.${token}` },
-    });
+    const response = await axiosInstance.get("/invoiceDetail", { params: { invoiceId } });
     if (response.status === 200 && response) return response.data;
   } catch (error) {
     console.error(error);
@@ -46,8 +28,9 @@ export const getInvoiceDetails = async ({ invoiceId }: { invoiceId: string }): P
 };
 
 export const getInvoiceMethods = async (): Promise<IInvoiceMethod[] | undefined> => {
+  const axiosInstance = getAxiosConfig();
   try {
-    const response = await axiosInstance.get("/invoice_method", { params: { select: "*" } });
+    const response = await axiosInstance.get("/invoiceMethod");
     if (response.status === 200 && response) return response.data;
   } catch (error) {
     console.error(error);
