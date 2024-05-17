@@ -141,6 +141,14 @@ export function Facturas() {
               ))}
             </select>
           </div>
+          <div className="relative">
+            <input
+              name="created_at"
+              onChange={(e) => handleChange(e)}
+              type="date"
+              className=" outline-none bg-dark-50 px-3 border-gray-500 focus:border-[#8F8F8F] border-[1px] rounded-md h-[2.5rem]"
+            />
+          </div>
         </div>
       )}
 

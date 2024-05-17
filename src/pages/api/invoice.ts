@@ -1,5 +1,6 @@
 import { DTOCreateInvoice, DTOCreateInvoiceDetail, IFilterInvoice, IInvoiceDetail, IProduct, getUser } from "@/services";
 import { axiosInstance } from "@/services/axiosIntance";
+import moment from "moment";
 
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -67,13 +68,19 @@ export default async function handleInvoice(req: NextApiRequest, res: NextApiRes
       return res.status(500).json({ message: "server error" });
     }
   } else {
-    const { id, invoice_method_id, currentPage = 1, order, type, totalPerPage = 999 } = req.query as IFilterInvoice;
+    const { id, invoice_method_id, currentPage = 1, order, type, totalPerPage = 999, created_at } = req.query as IFilterInvoice;
+    const todayLocal = moment(created_at).local().startOf("day").format("YYYY-MM-DD HH:mm:ss.SSSSSSZ");
+
+    const todayMidnight = moment.utc(todayLocal).local().endOf("day").format("YYYY-MM-DD HH:mm:ss.SSSSSSZ");
+
     const startIndex = (Number(currentPage) - 1) * totalPerPage;
     const endIndex = startIndex + Number(totalPerPage) - 1;
+
+    const params = created_at ? `?created_at=gte.${todayLocal}&created_at=lt.${todayMidnight}` : "";
     try {
       const user = await getUser({ token });
       if (!user) return res.status(401).json({ message: "Unauthorized" });
-      const response = await axiosInstance.get(`/invoice`, {
+      const response = await axiosInstance.get(`/invoice${params}`, {
         params: {
           select: "*,invoice_method:invoice_method_id(*)",
           token: `eq.${token}`,
