@@ -22,7 +22,7 @@ const config: Config = {
         primary: {
           300: "#74aafb",
           400: "#5c9bfa",
-          500: "#5A57EE",
+          500: "var(--color-primary-500)",
         },
         secundary: {
           900: "#9A009C",

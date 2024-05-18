@@ -2,16 +2,17 @@ import { Title } from "@/components/atoms";
 import { createChart, ColorType } from "lightweight-charts";
 import { useEffect, useRef } from "react";
 import { IChartProps } from "./types";
+import { hexToRGBA } from "@/utilities";
 export function Chart(props: IChartProps) {
-  const { data, title } = props;
+  const { data, title, color } = props;
   const chartContainerRef = useRef<any>();
 
   const colors = {
     backgroundColor: "#020202",
-    lineColor: "#5A57EE",
+    lineColor: color,
     textColor: "white",
-    areaTopColor: "#5A57EE",
-    areaBottomColor: "rgba(90, 87, 238,0.28)",
+    areaTopColor: color,
+    areaBottomColor: hexToRGBA(color, 0.28),
   };
 
   const combinedData = data.reduce((acc: { time: string; value: number }[], curr) => {
@@ -73,7 +74,9 @@ export function Chart(props: IChartProps) {
   }, [backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor, combinedData]);
   return (
     <div className="rounded-lg border border-gray-500 py-2.5 px-5 flex-1">
-      <Title>{title}</Title>
+      <Title>
+        {title} {color}
+      </Title>
       <div>
         <div ref={chartContainerRef} />
       </div>

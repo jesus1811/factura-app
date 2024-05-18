@@ -6,4 +6,5 @@ export interface IData {
 export interface IChartProps {
   data: IData[];
   title: string;
+  color: string;
 }

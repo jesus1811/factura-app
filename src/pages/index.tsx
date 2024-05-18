@@ -4,10 +4,18 @@ import { Layout } from "@/components/templates";
 import { TypeShop, getAllInvoices } from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import { useState } from "react";
 
 export default function Home() {
   const { data: invoices = [], isLoading } = useQuery({ queryKey: ["getAllInvoices"], queryFn: () => getAllInvoices({ order: "asc" }) });
 
+  const renderColor = () => {
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("color-primary") || "#5a57ee";
+      return storedColor;
+    }
+    return "#5a57ee";
+  };
   const profitsDay = invoices
     ?.map((invoice) => ({ ...invoice, created_at: moment.utc(invoice.created_at).format() }))
     ?.filter((invoice) => moment(invoice?.created_at).isSame(moment(), "day"))
@@ -70,7 +78,7 @@ export default function Home() {
         </article>
         <div className="flex-[3]">
           {isLoading && <Loader />}
-          {!isLoading && <Chart data={shopsList} title="Ventas" />}
+          {!isLoading && <Chart data={shopsList} title="Ventas" color={renderColor()} />}
         </div>
       </div>
       <div className=" w-full mt-6 flex gap-6 items-start">
@@ -83,7 +91,7 @@ export default function Home() {
         </article>
         <div className="flex-[3]">
           {isLoading && <Loader />}
-          {!isLoading && <Chart data={invoicesList} title="Facturas" />}
+          {!isLoading && <Chart data={invoicesList} title="Facturas" color={renderColor()} />}
         </div>
       </div>
       <div className=" w-full mt-6 flex gap-6 items-start">
@@ -96,7 +104,7 @@ export default function Home() {
         </article>
         <div className="flex-[3]">
           {isLoading && <Loader />}
-          {!isLoading && <Chart data={receiptList} title="Boletas" />}
+          {!isLoading && <Chart data={receiptList} title="Boletas" color={renderColor()} />}
         </div>
       </div>
     </Layout>

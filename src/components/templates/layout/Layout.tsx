@@ -1,6 +1,7 @@
 import { NavBar, SideBar } from "@/components/organisms";
 import { usePathname } from "next/navigation";
 import { LayoutProps } from "./types";
+import { Icon } from "@/components/atoms";
 
 export function Layout(props: LayoutProps) {
   const { children } = props;
@@ -62,6 +63,11 @@ export function Layout(props: LayoutProps) {
               </svg>
             ),
             href: "/ventas",
+          },
+          {
+            label: "Configuraciones",
+            icon: <Icon variant="config" className="!w-6" />,
+            href: "/configuraciones",
           },
         ]}
         pathname={pathname}

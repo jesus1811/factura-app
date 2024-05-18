@@ -142,12 +142,21 @@ export function Facturas() {
             </select>
           </div>
           <div className="relative">
-            <input
-              name="created_at"
-              onChange={(e) => handleChange(e)}
-              type="date"
-              className=" outline-none bg-dark-50 px-3 border-gray-500 focus:border-[#8F8F8F] border-[1px] rounded-md h-[2.5rem]"
-            />
+            <div date-rangepicker className="flex items-center">
+              <div className="relative">
+                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                  </svg>
+                </div>
+                <input
+                  name="created_at"
+                  onChange={(e) => handleChange(e)}
+                  type="date"
+                  className="outline-none bg-dark-50 px-3 border-gray-500 focus:border-[#8F8F8F] border-[1px] rounded-md h-[2.5rem]  text-sm  w-full ps-10  text-white"
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}
