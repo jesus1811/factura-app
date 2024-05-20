@@ -16,12 +16,13 @@ export default function App({ Component, pageProps }: AppProps) {
         },
       })
   );
+
   useEffect(() => {
     const storedColor = localStorage.getItem("color-primary") || "#5a57ee";
     if (storedColor && hasContrast("#020202", storedColor)) {
       document.documentElement.style.setProperty("--color-primary-500", storedColor);
     } else {
-      document.documentElement.style.setProperty("--color-primary-500", storedColor);
+      document.documentElement.style.setProperty("--color-primary-500", "#5a57ee");
     }
   }, []);
 

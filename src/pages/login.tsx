@@ -1,20 +1,22 @@
 import { Button, TextField, Title } from "@/components/atoms";
 import { loginUser } from "@/services";
 import { useMutation } from "@tanstack/react-query";
-import { serialize } from "cookie";
+import Cookies from "universal-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export function Login() {
   const router = useRouter();
+
+  const cookies = new Cookies();
   const { mutate: loginUserMutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
       if (!data) {
         return toast("Usuario y/o contraseña incorrecta", { className: "!bg-alertError" });
       }
-      document.cookie = serialize("access_token", data?.owner?.token);
+      cookies.set("access_token", data?.owner?.token);
       router.push("/");
     },
   });

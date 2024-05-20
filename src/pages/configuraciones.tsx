@@ -8,7 +8,8 @@ export function Configuraciones() {
   const [color, setColor] = useState(() => {
     if (typeof window !== "undefined") {
       const storedColor = localStorage.getItem("color-primary") || "#5a57ee";
-      return storedColor;
+      if (hasContrast("#020202", storedColor)) return storedColor;
+      return "#5a57ee";
     }
     return "#5a57ee";
   });

@@ -1,6 +1,6 @@
 // import { createClient } from "@supabase/supabase-js";
 import axios from "axios";
-import { parse } from "cookie";
+import Cookies from "universal-cookie";
 
 export const axiosInstance = axios.create({
   baseURL: "https://wajclqwuvmpszahaxxux.supabase.co/rest/v1",
@@ -13,8 +13,10 @@ export const axiosInstance = axios.create({
   },
 });
 
+const cookies = new Cookies();
+
 export const getAxiosConfig = () => {
-  const token = typeof window !== "undefined" ? parse(document.cookie).access_token : null;
+  const token = cookies.get("access_token");
   return axios.create({
     baseURL: "/api",
     headers: {

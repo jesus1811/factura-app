@@ -1,18 +1,21 @@
-import { Loader, Title } from "@/components/atoms";
+import { Button, Loader, Title } from "@/components/atoms";
 import { Chart } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { TypeShop, getAllInvoices } from "@/services";
+import { hasContrast } from "@/utilities";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useState } from "react";
+import Cookies from "universal-cookie";
 
 export default function Home() {
   const { data: invoices = [], isLoading } = useQuery({ queryKey: ["getAllInvoices"], queryFn: () => getAllInvoices({ order: "asc" }) });
-
+  const cookies = new Cookies();
   const renderColor = () => {
     if (typeof window !== "undefined") {
       const storedColor = localStorage.getItem("color-primary") || "#5a57ee";
-      return storedColor;
+      if (hasContrast("#020202", storedColor)) return storedColor;
+      return "#5a57ee";
     }
     return "#5a57ee";
   };
@@ -48,6 +51,14 @@ export default function Home() {
 
   return (
     <Layout>
+      <Button
+        onClick={() => {
+          cookies.set("demo", ["hola"]);
+        }}
+      >
+        demo
+      </Button>
+      {/* <h1>{cookies.get("access_token")}</h1> */}
       <div className="w-full grid md:grid-cols-3 text-white gap-5">
         <div className={`bg-[#328651] rounded-md h-fit`}>
           <div className={`icon_money p-5`}>

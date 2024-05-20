@@ -9,7 +9,6 @@ const initialCart: IProductCart[] = [];
 
 export const useCartStore = create<State>((set) => ({
   cart: initialCart,
-  isCart: false,
   addCart: (newProduct) => {
     set(({ cart }) => {
       const isCart = cart.some((cart) => cart.id === newProduct.id && cart?.price === newProduct?.price);

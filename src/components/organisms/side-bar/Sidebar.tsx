@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames";
-import { serialize } from "cookie";
+import Cookies from "universal-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode, useState } from "react";
@@ -13,6 +13,8 @@ export function SideBar(props: SideBarProps) {
   const changeNavbar = () => {
     setIsSidebar(!isSidebar);
   };
+
+  const cookies = new Cookies();
 
   return (
     <aside
@@ -77,7 +79,7 @@ export function SideBar(props: SideBarProps) {
                 "gap-4": isSidebar,
               })}
               onClick={() => {
-                document.cookie = serialize("access_token", "", { maxAge: -1 });
+                cookies.remove("access_token");
                 queryClient.clear();
                 router.push("/login");
               }}
