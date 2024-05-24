@@ -51,14 +51,6 @@ export default function Home() {
 
   return (
     <Layout>
-      <Button
-        onClick={() => {
-          cookies.set("demo", ["hola"]);
-        }}
-      >
-        demo
-      </Button>
-      {/* <h1>{cookies.get("access_token")}</h1> */}
       <div className="w-full grid md:grid-cols-3 text-white gap-5">
         <div className={`bg-[#328651] rounded-md h-fit`}>
           <div className={`icon_money p-5`}>

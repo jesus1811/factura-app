@@ -74,9 +74,7 @@ export function Chart(props: IChartProps) {
   }, [backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor, combinedData]);
   return (
     <div className="rounded-lg border border-gray-500 py-2.5 px-5 flex-1">
-      <Title>
-        {title} {color}
-      </Title>
+      <Title>{title}</Title>
       <div>
         <div ref={chartContainerRef} />
       </div>

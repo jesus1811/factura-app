@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { TypeShop, deleteInvoice, getInvoiceDetails } from "@/services";
 import moment from "moment";
 import { toast } from "sonner";
+import axios from "axios";
 
 export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
   const { closeModal, isModal, invoiceId } = props;
@@ -22,6 +23,19 @@ export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
   });
 
   const invoice = invoiceDetails?.find((invoiceDetail) => invoiceDetail)?.invoice;
+
+  const sendInvoiceToSunat = async () => {
+    try {
+      const response = await axios.post("/api/sunat", { invoice, invoiceDetails });
+      if (response.data.success) {
+        toast("Factura enviada a SUNAT correctamente", { className: "!bg-primary-500" });
+      } else {
+        toast("Error al enviar la factura a SUNAT", { className: "!bg-alertError" });
+      }
+    } catch (error) {
+      toast("Error al enviar la factura a SUNAT", { className: "!bg-alertError" });
+    }
+  };
 
   const printInvoiceDetail = () => {
     const contentPrint = document.getElementById("invoice");
