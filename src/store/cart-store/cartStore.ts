@@ -39,7 +39,7 @@ export const useCartStore = create<State>((set) => ({
   changeProduct: (productUpdate) => {
     set(({ cart }) => {
       const productsUpdate = cart?.map((product) => {
-        if (product?.id === productUpdate?.id && product?.price === productUpdate?.price) return { ...product, count: productUpdate?.count };
+        if (product?.id === productUpdate?.id) return { ...productUpdate };
         return product;
       });
       localStorage.setItem("CART", JSON.stringify(productsUpdate));

@@ -5,6 +5,7 @@ import { Layout } from "@/components/templates";
 import { IFilterProduct, IProduct, getAllCategories, getAllProducts } from "@/services";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
+import Head from "next/head";
 
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -70,6 +71,9 @@ export function Productos() {
 
   return (
     <Layout>
+      <Head>
+        <title>Stock</title>
+      </Head>
       <div className="w-full flex flex-wrap gap-2 items-end">
         <Button onClick={() => setIsModalCreate(true)}>
           Agregar

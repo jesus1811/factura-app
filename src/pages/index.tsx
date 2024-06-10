@@ -5,6 +5,7 @@ import { TypeShop, getAllInvoices } from "@/services";
 import { hasContrast } from "@/utilities";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import Head from "next/head";
 import { useState } from "react";
 import Cookies from "universal-cookie";
 
@@ -51,6 +52,9 @@ export default function Home() {
 
   return (
     <Layout>
+      <Head>
+        <title>Factura Pro</title>
+      </Head>
       <div className="w-full grid md:grid-cols-3 text-white gap-5">
         <div className={`bg-[#328651] rounded-md h-fit`}>
           <div className={`icon_money p-5`}>
@@ -71,43 +75,50 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className=" w-full mt-6 flex gap-6 items-start">
-        <article className="flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
+      <div className=" w-full mt-6 flex gap-6 items-start flex-col xl:flex-row">
+        <article className="w-full xl:flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
           <Title>Ventas</Title>
           <div className="flex w-full justify-between">
             <p>Total ventas</p>
             <p>S/{shopsListTotal}</p>
           </div>
         </article>
-        <div className="flex-[3]">
-          {isLoading && <Loader />}
-          {!isLoading && <Chart data={shopsList} title="Ventas" color={renderColor()} />}
+        <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
+          <div className="xl:w-full w-[56.25rem]">
+            {isLoading && <Loader />}
+            {!isLoading && <Chart data={shopsList} title="Ventas" color={renderColor()} />}
+          </div>
         </div>
       </div>
-      <div className=" w-full mt-6 flex gap-6 items-start">
-        <article className="flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
+      <div className=" w-full mt-6 flex gap-6 items-start flex-col xl:flex-row">
+        <article className="w-full xl:flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
           <Title>Facturas</Title>
           <div className="flex w-full justify-between">
             <p>Total</p>
             <p>S/{invoicesListTotal}</p>
           </div>
         </article>
-        <div className="flex-[3]">
-          {isLoading && <Loader />}
-          {!isLoading && <Chart data={invoicesList} title="Facturas" color={renderColor()} />}
+        <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
+          <div className="xl:w-full w-[56.25rem]">
+            {isLoading && <Loader />}
+            {!isLoading && <Chart data={invoicesList} title="Ventas" color={renderColor()} />}
+          </div>
         </div>
       </div>
-      <div className=" w-full mt-6 flex gap-6 items-start">
-        <article className="flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
+
+      <div className=" w-full mt-6 flex gap-6 items-start flex-col xl:flex-row">
+        <article className="w-full xl:flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
           <Title>Boletas</Title>
           <div className="flex w-full justify-between">
             <p>Total</p>
             <p>S/{receiptListTotal}</p>
           </div>
         </article>
-        <div className="flex-[3]">
-          {isLoading && <Loader />}
-          {!isLoading && <Chart data={receiptList} title="Boletas" color={renderColor()} />}
+        <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
+          <div className="xl:w-full w-[56.25rem]">
+            {isLoading && <Loader />}
+            {!isLoading && <Chart data={receiptList} title="Ventas" color={renderColor()} />}
+          </div>
         </div>
       </div>
     </Layout>

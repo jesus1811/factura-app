@@ -2,7 +2,6 @@ import { NavBar, SideBar } from "@/components/organisms";
 import { usePathname } from "next/navigation";
 import { LayoutProps } from "./types";
 import { Icon } from "@/components/atoms";
-
 export function Layout(props: LayoutProps) {
   const { children } = props;
   const pathname = usePathname();
@@ -72,7 +71,7 @@ export function Layout(props: LayoutProps) {
         ]}
         pathname={pathname}
       />
-      <div className="flex flex-col w-full min-h-screen overflow-hidden">
+      <div className="flex flex-col w-full h-screen overflow-hidden">
         <NavBar pathname={pathname} />
         <main className={`bg-dark-500 w-full h-full px-5 py-3 lg:px-16 lg:py-7 overflow-auto text-white `}>{children}</main>
       </div>

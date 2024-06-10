@@ -60,6 +60,48 @@ export function Icon(props: IconProps): JSX.Element | null {
         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     );
+  if (variant === "user")
+    return (
+      <svg
+        data-v-267ba792=""
+        data-v-af6bd3a0=""
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fal"
+        data-icon="user"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 448 512"
+        className={classNames("w-5 aspect-square", className)}
+      >
+        <path
+          data-v-267ba792=""
+          data-v-af6bd3a0=""
+          fill="currentColor"
+          d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM224 32c52.94 0 96 43.06 96 96c0 52.93-43.06 96-96 96S128 180.9 128 128C128 75.06 171.1 32 224 32zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304zM413.3 480H34.66C33.2 480 32 478.8 32 477.3C32 399.4 95.4 336 173.3 336h101.3C352.6 336 416 399.4 416 477.3C416 478.8 414.8 480 413.3 480z"
+        ></path>
+      </svg>
+    );
+  if (variant === "menu")
+    return (
+      <svg
+        data-v-6fc2466e=""
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="bars"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 448 512"
+        className={classNames("w-5 aspect-square", className)}
+      >
+        <path
+          data-v-6fc2466e=""
+          fill="currentColor"
+          d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"
+        ></path>
+      </svg>
+    );
   return null;
 }
 

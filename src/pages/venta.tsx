@@ -5,6 +5,7 @@ import { IInvoiceMethod, TypeShop, addInvoice, getAllProducts, getInvoiceMethods
 import { useCartStore } from "@/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
@@ -66,7 +67,8 @@ export function Venta() {
   const rows: IRows[] = cart?.map((product) => ({
     ...product,
     category: product?.category?.name,
-    count: <TextField value={product?.count?.toString()} onChange={(e) => changeProduct({ ...product, count: Number(e.currentTarget.value) })} placeholder="cantidad" />,
+    count: <TextField value={product?.count?.toString()} onChange={(e) => changeProduct({ ...product, count: Number(e.currentTarget.value) })} placeholder="Cantidad" />,
+    price: <TextField value={product?.price} onChange={(e) => changeProduct({ ...product, price: e.currentTarget.value })} placeholder="Precio" />,
     Total: Number(product?.price) * product?.count,
     settings: (
       <button className="ml-5" onClick={() => deleteProduct(product)}>
@@ -89,6 +91,9 @@ export function Venta() {
   }, [methods]);
   return (
     <Layout>
+      <Head>
+        <title>Venta</title>
+      </Head>
       <div className="flex gap-5 w-full h-full">
         <div className="w-full  h-full">
           <div className="flex gap-4 items-end w-full">

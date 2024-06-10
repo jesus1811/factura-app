@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "sonner";
+import Head from "next/head";
 
 export function Login() {
   const router = useRouter();
@@ -25,6 +26,9 @@ export function Login() {
 
   return (
     <section className="bg-dark-500 flex bg w-full justify-center items-center flex-col h-screen text-white">
+      <Head>
+        <title>Login</title>
+      </Head>
       <form
         onSubmit={(e) => {
           e.preventDefault();

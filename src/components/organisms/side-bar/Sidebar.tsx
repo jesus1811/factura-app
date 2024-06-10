@@ -3,23 +3,25 @@ import classNames from "classnames";
 import Cookies from "universal-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { useSidebarStore } from "@/store/sidebar-store/sidebarStore";
 
 export function SideBar(props: SideBarProps) {
   const { routes, pathname } = props;
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [isSidebar, setIsSidebar] = useState<boolean>(true);
-  const changeNavbar = () => {
-    setIsSidebar(!isSidebar);
-  };
+  const { isSidebar, loadStore, changeSidebar } = useSidebarStore();
 
   const cookies = new Cookies();
 
+  useEffect(() => {
+    loadStore();
+  }, []);
+
   return (
     <aside
-      className={classNames(" right-0 border border-gray-500 text-white bg-dark-500 sticky top-0 left-0  h-screen flex flex-col  duration-300     z-20", {
-        "w-[145px]": !isSidebar,
+      className={classNames(" right-0 border border-gray-500 text-white bg-dark-500 fixed xl:sticky top-0 left-0  h-screen flex flex-col  duration-300      z-20", {
+        "xl:w-[145px] w-0 xl:overflow-visible overflow-hidden": !isSidebar,
         "w-72": isSidebar,
       })}
     >
@@ -45,7 +47,7 @@ export function SideBar(props: SideBarProps) {
           className={classNames("hover:bg-dark-100 border border-gray-500 bg-dark-500  p-2 rounded-full transition-colors absolute top-[50%] right-0 translate-x-[1.25rem]", {
             "rotate-180": !isSidebar,
           })}
-          onClick={changeNavbar}
+          onClick={changeSidebar}
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
@@ -59,7 +61,7 @@ export function SideBar(props: SideBarProps) {
             <li key={route?.label}>
               <Link
                 href={route?.href || "#"}
-                className={classNames("flex  hover:bg-dark-100  rounded-md p-2 transition-colors", {
+                className={classNames("flex   hover:bg-dark-100  rounded-md p-2 transition-colors", {
                   "text-[12px] flex-col items-center gap-1": !isSidebar,
                   "gap-4": isSidebar,
                   "bg-dark-100": pathname === route?.href,

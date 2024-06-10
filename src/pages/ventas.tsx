@@ -5,6 +5,7 @@ import { IFilterInvoice, TypeShop, getAllInvoices, getInvoiceMethods } from "@/s
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import moment from "moment";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -66,6 +67,9 @@ export function Facturas() {
   }, [isModalDetail]);
   return (
     <Layout>
+      <Head>
+        <title>Ventas</title>
+      </Head>
       <div className="w-full flex flex-wrap gap-2">
         <Button onClick={() => router.push("/venta")}>
           Nueva venta
@@ -86,75 +90,77 @@ export function Facturas() {
         </Button>
       </div>
       {isFilter && (
-        <div className="flex gap-2 items-end mt-6">
-          <div>
-            <p>Codigo</p>
-            <TextField
-              value={filter?.id}
-              name="id"
-              onChange={(e) => {
-                handleChange(e);
-                setCurrentPage(1);
-              }}
-            />
-          </div>
-          <div>
-            <select
-              value={filter?.type}
-              onChange={(e) => {
-                handleChange(e);
-                setCurrentPage(1);
-              }}
-              name="type"
-              id=""
-              className={classNames(
-                "bg-dark-50 px-3 h-[2.5rem] w-full max-w-[400px]  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none"
-              )}
-            >
-              <option value="">Selecciona un tipo</option>
+        <div className="w-full overflow-x-auto overflow-y-hidden">
+          <div className="flex gap-2 items-end mt-6 w-[50rem] ">
+            <div>
+              <p>Codigo</p>
+              <TextField
+                value={filter?.id}
+                name="id"
+                onChange={(e) => {
+                  handleChange(e);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
+            <div>
+              <select
+                value={filter?.type}
+                onChange={(e) => {
+                  handleChange(e);
+                  setCurrentPage(1);
+                }}
+                name="type"
+                id=""
+                className={classNames(
+                  "bg-dark-50 px-3 h-[2.5rem] w-full max-w-[400px]  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none"
+                )}
+              >
+                <option value="">Selecciona un tipo</option>
 
-              {Object.values(TypeShop)?.map((typeShop) => (
-                <option key={typeShop} value={typeShop}>
-                  {typeShop}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <select
-              value={filter?.invoice_method_id}
-              onChange={(e) => {
-                handleChange(e);
-                setCurrentPage(1);
-              }}
-              name="invoice_method_id"
-              id=""
-              className={classNames(
-                "bg-dark-50 px-3 h-[2.5rem] w-full max-w-[400px]  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none"
-              )}
-            >
-              <option value="">Selecciona un metodo</option>
-              {methods?.map((method) => (
-                <option key={method?.id} value={method?.id}>
-                  {method?.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="relative">
-            <div date-rangepicker className="flex items-center">
-              <div className="relative">
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                  </svg>
+                {Object.values(TypeShop)?.map((typeShop) => (
+                  <option key={typeShop} value={typeShop}>
+                    {typeShop}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <select
+                value={filter?.invoice_method_id}
+                onChange={(e) => {
+                  handleChange(e);
+                  setCurrentPage(1);
+                }}
+                name="invoice_method_id"
+                id=""
+                className={classNames(
+                  "bg-dark-50 px-3 h-[2.5rem] w-full max-w-[400px]  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none"
+                )}
+              >
+                <option value="">Selecciona un metodo</option>
+                {methods?.map((method) => (
+                  <option key={method?.id} value={method?.id}>
+                    {method?.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="relative">
+              <div date-rangepicker className="flex items-center">
+                <div className="relative">
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                    </svg>
+                  </div>
+                  <input
+                    name="created_at"
+                    onChange={(e) => handleChange(e)}
+                    type="date"
+                    className="outline-none bg-dark-50 px-3 border-gray-500 focus:border-[#8F8F8F] border-[1px] rounded-md h-[2.5rem]  text-sm  w-full ps-10  text-white"
+                  />
                 </div>
-                <input
-                  name="created_at"
-                  onChange={(e) => handleChange(e)}
-                  type="date"
-                  className="outline-none bg-dark-50 px-3 border-gray-500 focus:border-[#8F8F8F] border-[1px] rounded-md h-[2.5rem]  text-sm  w-full ps-10  text-white"
-                />
               </div>
             </div>
           </div>

@@ -1,6 +1,8 @@
+import { Button } from "@/components/atoms";
 import { DataTable, IRows, Icolumns } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { hasContrast } from "@/utilities";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -49,6 +51,9 @@ export function Configuraciones() {
 
   return (
     <Layout>
+      <Head>
+        <title>Configuraciones</title>
+      </Head>
       <DataTable columns={columns} rows={rows} className="mt-6" />
       <p>* en desarrollo </p>
     </Layout>

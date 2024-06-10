@@ -3,6 +3,7 @@ import { DataTable, IRows, Icolumns, ModalCreateCategory, ModalEditCategory } fr
 import { Layout } from "@/components/templates";
 import { ICategory, IFilterCategory, getAllCategories } from "@/services";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import Head from "next/head";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
@@ -60,6 +61,9 @@ export function Categorias() {
   return (
     <>
       <Layout>
+        <Head>
+          <title>Categorias</title>
+        </Head>
         <div className="w-full flex flex-wrap gap-2">
           <Button onClick={() => setIsModalCreate(true)}>
             Agregar
