@@ -91,7 +91,7 @@ export function Facturas() {
       </div>
       {isFilter && (
         <div className="w-full overflow-x-auto overflow-y-hidden">
-          <div className="flex gap-2 items-end mt-6 w-[50rem] ">
+          <div className="flex gap-2 items-end mt-6 w-[48.1875rem]">
             <div>
               <p>Codigo</p>
               <TextField

@@ -84,36 +84,38 @@ export function Categorias() {
           </Button>
         </div>
         {isFilter && (
-          <div className="flex gap-2 items-end mt-6 #060606">
-            <div>
-              <p>Codigo</p>
-              <TextField
-                value={filter?.id}
-                name="id"
-                onChange={(e) => {
-                  handleChange(e);
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
-            <div>
-              <p>Nombre</p>
-              <TextField
-                value={filter?.name}
-                name="name"
-                list="products"
-                onChange={(e) => {
-                  handleChange(e);
-                  setCurrentPage(1);
-                }}
-              />
-              <datalist id="products">
-                {categories.map((product) => (
-                  <option key={product?.id} value={product?.name}>
-                    {product?.id}
-                  </option>
-                ))}
-              </datalist>
+          <div className="w-full overflow-x-auto overflow-y-hidden">
+            <div className="flex gap-2 items-end mt-6 w-[26.375rem]">
+              <div>
+                <p>Codigo</p>
+                <TextField
+                  value={filter?.id}
+                  name="id"
+                  onChange={(e) => {
+                    handleChange(e);
+                    setCurrentPage(1);
+                  }}
+                />
+              </div>
+              <div>
+                <p>Nombre</p>
+                <TextField
+                  value={filter?.name}
+                  name="name"
+                  list="products"
+                  onChange={(e) => {
+                    handleChange(e);
+                    setCurrentPage(1);
+                  }}
+                />
+                <datalist id="products">
+                  {categories.map((product) => (
+                    <option key={product?.id} value={product?.name}>
+                      {product?.id}
+                    </option>
+                  ))}
+                </datalist>
+              </div>
             </div>
           </div>
         )}

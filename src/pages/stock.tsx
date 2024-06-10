@@ -95,57 +95,59 @@ export function Productos() {
       </div>
 
       {isFilter && (
-        <div className="flex gap-2 items-end mt-6">
-          <div>
-            <p>Codigo</p>
-            <TextField
-              value={filter?.id}
-              name="id"
-              onChange={(e) => {
-                handleChange(e);
-                setCurrentPage(1);
-              }}
-            />
-          </div>
-          <div>
-            <p>Nombre</p>
-            <TextField
-              value={filter?.name}
-              name="name"
-              list="products"
-              onChange={(e) => {
-                handleChange(e);
-                setCurrentPage(1);
-              }}
-            />
-            <datalist id="products">
-              {products?.map((product) => (
-                <option key={product?.id} value={product?.name}>
-                  {product?.id}
-                </option>
-              ))}
-            </datalist>
-          </div>
-          <div>
-            <select
-              value={filter?.category_id}
-              onChange={(e) => {
-                handleChange(e);
-                setCurrentPage(1);
-              }}
-              name="category_id"
-              id=""
-              className={classNames(
-                "bg-dark-50 px-3 h-[2.5rem] w-full max-w-[400px]  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none"
-              )}
-            >
-              <option value="">Selecciona una categoría</option>
-              {categories?.map((category) => (
-                <option key={category?.id} value={category?.id}>
-                  {category?.name}
-                </option>
-              ))}
-            </select>
+        <div className="w-full overflow-x-auto overflow-y-hidden">
+          <div className="flex gap-2 items-end mt-6 w-[40.875rem]">
+            <div>
+              <p>Codigo</p>
+              <TextField
+                value={filter?.id}
+                name="id"
+                onChange={(e) => {
+                  handleChange(e);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
+            <div>
+              <p>Nombre</p>
+              <TextField
+                value={filter?.name}
+                name="name"
+                list="products"
+                onChange={(e) => {
+                  handleChange(e);
+                  setCurrentPage(1);
+                }}
+              />
+              <datalist id="products">
+                {products?.map((product) => (
+                  <option key={product?.id} value={product?.name}>
+                    {product?.id}
+                  </option>
+                ))}
+              </datalist>
+            </div>
+            <div>
+              <select
+                value={filter?.category_id}
+                onChange={(e) => {
+                  handleChange(e);
+                  setCurrentPage(1);
+                }}
+                name="category_id"
+                id=""
+                className={classNames(
+                  "bg-dark-50 px-3 h-[2.5rem] w-full max-w-[400px]  border-[1px] text-white placeholder:text-[#8F8F8F] border-gray-500 rounded-md focus:border-[#8F8F8F] outline-none"
+                )}
+              >
+                <option value="">Selecciona una categoría</option>
+                {categories?.map((category) => (
+                  <option key={category?.id} value={category?.id}>
+                    {category?.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       )}
