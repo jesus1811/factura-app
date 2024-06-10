@@ -67,8 +67,8 @@ export function Venta() {
   const rows: IRows[] = cart?.map((product) => ({
     ...product,
     category: product?.category?.name,
-    count: <TextField value={product?.count?.toString()} onChange={(e) => changeProduct({ ...product, count: Number(e.currentTarget.value) })} placeholder="Cantidad" />,
-    price: <TextField value={product?.price} onChange={(e) => changeProduct({ ...product, price: e.currentTarget.value })} placeholder="Precio" />,
+    count: <TextField className="border-transparent" value={product?.count?.toString()} onChange={(e) => changeProduct({ ...product, count: Number(e.currentTarget.value) })} placeholder="Cantidad" />,
+    price: <TextField className="border-transparent" value={product?.price} onChange={(e) => changeProduct({ ...product, price: e.currentTarget.value })} placeholder="Precio" />,
     Total: Number(product?.price) * product?.count,
     settings: (
       <button className="ml-5" onClick={() => deleteProduct(product)}>

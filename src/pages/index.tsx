@@ -79,7 +79,7 @@ export default function Home() {
         <article className="w-full xl:flex-1 rounded-lg border border-gray-500 py-2.5 px-5 gap-5 flex flex-col">
           <Title>Ventas</Title>
           <div className="flex w-full justify-between">
-            <p>Total ventas</p>
+            <p>Total</p>
             <p>S/{shopsListTotal}</p>
           </div>
         </article>
@@ -101,7 +101,7 @@ export default function Home() {
         <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
           <div className="xl:w-full w-[56.25rem]">
             {isLoading && <Loader />}
-            {!isLoading && <Chart data={invoicesList} title="Ventas" color={renderColor()} />}
+            {!isLoading && <Chart data={invoicesList} title="Facturas" color={renderColor()} />}
           </div>
         </div>
       </div>
@@ -117,7 +117,7 @@ export default function Home() {
         <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
           <div className="xl:w-full w-[56.25rem]">
             {isLoading && <Loader />}
-            {!isLoading && <Chart data={receiptList} title="Ventas" color={renderColor()} />}
+            {!isLoading && <Chart data={receiptList} title="Boletas" color={renderColor()} />}
           </div>
         </div>
       </div>
