@@ -3,20 +3,16 @@ import classNames from "classnames";
 import Cookies from "universal-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { useSidebarStore } from "@/store/sidebar-store/sidebarStore";
 
 export function SideBar(props: SideBarProps) {
   const { routes, pathname } = props;
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { isSidebar, loadStore, changeSidebar } = useSidebarStore();
+  const { isSidebar, changeSidebar } = useSidebarStore();
 
   const cookies = new Cookies();
-
-  useEffect(() => {
-    loadStore();
-  }, []);
 
   return (
     <aside

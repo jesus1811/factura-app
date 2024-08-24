@@ -1,25 +1,16 @@
-import { Button, Loader, Title } from "@/components/atoms";
+import { Loader, Title } from "@/components/atoms";
 import { Chart } from "@/components/organisms";
 import { Layout } from "@/components/templates";
 import { TypeShop, getAllInvoices } from "@/services";
-import { hasContrast } from "@/utilities";
+import { useThemeStore } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Head from "next/head";
-import { useState } from "react";
-import Cookies from "universal-cookie";
 
 export default function Home() {
   const { data: invoices = [], isLoading } = useQuery({ queryKey: ["getAllInvoices"], queryFn: () => getAllInvoices({ order: "asc" }) });
-  const cookies = new Cookies();
-  const renderColor = () => {
-    if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem("color-primary") || "#5a57ee";
-      if (hasContrast("#020202", storedColor)) return storedColor;
-      return "#5a57ee";
-    }
-    return "#5a57ee";
-  };
+  const { theme } = useThemeStore();
+
   const profitsDay = invoices
     ?.map((invoice) => ({ ...invoice, created_at: moment.utc(invoice.created_at).format() }))
     ?.filter((invoice) => moment(invoice?.created_at).isSame(moment(), "day"))
@@ -86,7 +77,7 @@ export default function Home() {
         <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
           <div className="xl:w-full w-[56.25rem]">
             {isLoading && <Loader />}
-            {!isLoading && <Chart data={shopsList} title="Ventas" color={renderColor()} />}
+            {!isLoading && <Chart data={shopsList} title="Ventas" color={theme?.primaryColor} />}
           </div>
         </div>
       </div>
@@ -101,7 +92,7 @@ export default function Home() {
         <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
           <div className="xl:w-full w-[56.25rem]">
             {isLoading && <Loader />}
-            {!isLoading && <Chart data={invoicesList} title="Facturas" color={renderColor()} />}
+            {!isLoading && <Chart data={invoicesList} title="Facturas" color={theme?.primaryColor} />}
           </div>
         </div>
       </div>
@@ -117,7 +108,7 @@ export default function Home() {
         <div className="xl:flex-[3] w-full xl:w-auto overflow-auto">
           <div className="xl:w-full w-[56.25rem]">
             {isLoading && <Loader />}
-            {!isLoading && <Chart data={receiptList} title="Boletas" color={renderColor()} />}
+            {!isLoading && <Chart data={receiptList} title="Boletas" color={theme?.primaryColor} />}
           </div>
         </div>
       </div>

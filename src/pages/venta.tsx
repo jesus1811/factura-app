@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 export function Venta() {
-  const { cart, addCart, loadStore, clearStorage, changeProduct, deleteProduct } = useCartStore();
+  const { cart, addCart, clearStorage, changeProduct, deleteProduct } = useCartStore();
   const { data: products = [] } = useQuery({ queryKey: ["getAllProducts"], queryFn: () => getAllProducts({}) });
   const { data: methods, isLoading } = useQuery({ queryKey: ["getInvoiceMethods"], queryFn: getInvoiceMethods });
   const queryClient = useQueryClient();
@@ -76,10 +76,6 @@ export function Venta() {
       </button>
     ),
   }));
-
-  useEffect(() => {
-    loadStore();
-  }, []);
 
   useEffect(() => {
     setProductPrice(Number(productFind?.price || 0));

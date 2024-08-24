@@ -1,9 +1,13 @@
-import { DTOCreateInvoice, DTOCreateInvoiceDetail, IFilterInvoice, IInvoiceDetail, IProduct, getUser } from "@/services";
+import { DTOCreateInvoice, DTOCreateInvoiceDetail, IFilterInvoice, IInvoiceDetail, IProduct, TypeShop, getUser } from "@/services";
 import { axiosInstance } from "@/services/axiosIntance";
+import { IProductCart } from "@/store";
 import moment from "moment";
 
 import { NextApiRequest, NextApiResponse } from "next";
-
+interface IFilterInvoiceExtended extends IFilterInvoice {
+  todayLocal: string;
+  todayMidnight: string;
+}
 export default async function handleInvoice(req: NextApiRequest, res: NextApiResponse) {
   const token = req.headers.authorization?.split(" ")?.[1];
   if (!token) return res.status(400).json({ message: "invalidate token" });
@@ -68,15 +72,12 @@ export default async function handleInvoice(req: NextApiRequest, res: NextApiRes
       return res.status(500).json({ message: "server error" });
     }
   } else {
-    const { id, invoice_method_id, currentPage = 1, order, type, totalPerPage = 999, created_at } = req.query as IFilterInvoice;
-    const todayLocal = moment(created_at).local().startOf("day").format("YYYY-MM-DD HH:mm:ss.SSSSSSZ");
-
-    const todayMidnight = moment.utc(todayLocal).local().endOf("day").format("YYYY-MM-DD HH:mm:ss.SSSSSSZ");
+    const { id, invoice_method_id, currentPage = 1, order, type, totalPerPage = 999, todayLocal, todayMidnight, created_at } = req.query as Partial<IFilterInvoiceExtended>;
 
     const startIndex = (Number(currentPage) - 1) * totalPerPage;
     const endIndex = startIndex + Number(totalPerPage) - 1;
-
     const params = created_at ? `?created_at=gte.${todayLocal}&created_at=lt.${todayMidnight}` : "";
+
     try {
       const user = await getUser({ token });
       if (!user) return res.status(401).json({ message: "Unauthorized" });

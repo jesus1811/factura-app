@@ -1,22 +1,22 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useSidebarStore = create<State>((set) => ({
-  isSidebar: true,
-  loadStore: () => {
-    set(() => {
-      return { isSidebar: JSON.parse(localStorage.getItem("isSidebar") || "false") };
-    });
-  },
-  changeSidebar: () => {
-    set(({ isSidebar }) => {
-      localStorage.setItem("isSidebar", JSON.stringify(!isSidebar));
-      return { isSidebar: !isSidebar };
-    });
-  },
-}));
+export const useSidebarStore = create(
+  persist<State>(
+    (set) => ({
+      isSidebar: false,
+      changeSidebar: () => {
+        set(({ isSidebar }) => {
+          localStorage.setItem("isSidebar", JSON.stringify(!isSidebar));
+          return { isSidebar: !isSidebar };
+        });
+      },
+    }),
+    { name: "sidebar-store" }
+  )
+);
 
 interface State {
   isSidebar: boolean;
-  loadStore: () => void;
   changeSidebar: () => void;
 }

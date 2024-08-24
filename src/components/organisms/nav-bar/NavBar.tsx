@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "universal-cookie";
 import { getUser } from "@/services";
 import { useState } from "react";
-import { useSidebarStore } from "@/store/sidebar-store/sidebarStore";
+import { useSidebarStore } from "@/store";
 
 export function NavBar(props: INavBarProps) {
   const { pathname } = props;
