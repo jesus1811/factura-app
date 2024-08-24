@@ -73,7 +73,7 @@ export function Layout(props: LayoutProps) {
       />
       <div className="flex flex-col w-full h-screen overflow-hidden">
         <NavBar pathname={pathname} />
-        <main className={`bg-dark-500 w-full h-full px-5 py-3 lg:px-16 lg:py-7 overflow-auto text-white `}>{children}</main>
+        <main className={`bg-dark-500 w-full h-full px-5 py-3 xl:px-16 xl:py-7 overflow-auto text-white `}>{children}</main>
       </div>
     </div>
   );

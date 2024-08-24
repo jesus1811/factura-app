@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 export const useSidebarStore = create(
   persist<State>(
     (set) => ({
-      isSidebar: false,
+      isSidebar: true,
       changeSidebar: () => {
         set(({ isSidebar }) => {
           localStorage.setItem("isSidebar", JSON.stringify(!isSidebar));

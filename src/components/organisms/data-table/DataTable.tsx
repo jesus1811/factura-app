@@ -10,7 +10,7 @@ export function DataTable(props: IDataTableProps) {
         <thead className="bg-dark-100 text-white ">
           <tr className="border-b  border-gray-500 ">
             {columns?.map((column) => (
-              <th key={column?.nameKey} className="text-start p-2 lg:px-7 lg:py-5 ">
+              <th key={column?.nameKey} className="text-start p-2 xl:px-7 xl:py-5 ">
                 {column.value}
               </th>
             ))}
