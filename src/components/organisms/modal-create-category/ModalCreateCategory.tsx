@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 export function ModalCreateCategory(props: IModalCreateCategory) {
   const { refetch, closeModal, isModal } = props;
-  const [formData, setFormData] = useState<DTOCreateCategory>({} as DTOCreateCategory);
+  const [formData, setFormData] = useState<DTOCreateCategory>();
 
   const { mutate: addCategoryMutate } = useMutation({
     mutationFn: addCategory,
@@ -21,24 +21,25 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
     },
   });
 
-  const renderValidate = () => {
-    if (!formData?.name) {
-      return false;
-    }
+  const validate = (() => {
+    if (!formData?.name) return false;
     return true;
-  };
+  })();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
   useEffect(() => {
-    setFormData({} as DTOCreateCategory);
-  }, [isModal]);
+    return () => {
+      setFormData(undefined);
+    };
+  }, []);
 
   return (
     <>
@@ -49,8 +50,9 @@ export function ModalCreateCategory(props: IModalCreateCategory) {
           <TextField error={formData?.name ? undefined : "Requerido"} value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
         </div>
         <Button
-          isDisabled={!renderValidate()}
+          isDisabled={!validate}
           onClick={() => {
+            if (!formData) return;
             addCategoryMutate({ name: formData?.name });
           }}
         >

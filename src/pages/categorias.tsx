@@ -54,10 +54,7 @@ export function Categorias() {
       </button>
     ),
   }));
-  useEffect(() => {
-    if (isModalEdit) return;
-    setCategory({} as ICategory);
-  }, [isModalEdit]);
+
   return (
     <>
       <Layout>
@@ -139,8 +136,8 @@ export function Categorias() {
             </div>
           </>
         )}
-        <ModalCreateCategory isModal={isModalCreate} closeModal={() => setIsModalCreate(false)} refetch={refetchCategories} />
-        {category && <ModalEditCategory category={category} isModal={isModalEdit} closeModal={() => setIsModalEdit(false)} refetch={refetchCategories} />}
+        {isModalCreate && <ModalCreateCategory isModal={isModalCreate} closeModal={() => setIsModalCreate(false)} refetch={refetchCategories} />}
+        {category && isModalEdit && <ModalEditCategory category={category} isModal={isModalEdit} closeModal={() => setIsModalEdit(false)} refetch={refetchCategories} />}
       </Layout>
     </>
   );

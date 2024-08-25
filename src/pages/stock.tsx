@@ -64,11 +64,6 @@ export function Productos() {
     });
   };
 
-  useEffect(() => {
-    if (isModalEdit) return;
-    setProduct({} as IProduct);
-  }, [isModalEdit]);
-
   return (
     <Layout>
       <Head>
@@ -171,8 +166,8 @@ export function Productos() {
           </div>
         </>
       )}
-      <ModalCreateProduct refetch={refetchProducts} closeModal={() => setIsModalCreate(false)} isModal={isModalCreate} />
-      {product && <ModalEditProduct closeModal={() => setIsModalEdit(false)} isModal={isModalEdit} product={product} refetch={refetchProducts} />}
+      {isModalCreate && <ModalCreateProduct refetch={refetchProducts} closeModal={() => setIsModalCreate(false)} isModal={isModalCreate} />}
+      {product && isModalEdit && <ModalEditProduct closeModal={() => setIsModalEdit(false)} isModal={isModalEdit} product={product} refetch={refetchProducts} />}
     </Layout>
   );
 }

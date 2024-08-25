@@ -42,7 +42,7 @@ export function Venta() {
 
   const [client, setClient] = useState<{ client_RUC_DNI: string; client_name: string; client_surname: string }>({} as { client_RUC_DNI: string; client_name: string; client_surname: string });
 
-  const renderValidateaddInvoice = () => {
+  const validate = (() => {
     if (!cart || !total) {
       return false;
     }
@@ -54,7 +54,7 @@ export function Venta() {
       return false;
     }
     return true;
-  };
+  })();
 
   const columns: Icolumns[] = [
     { value: "Descripcion", nameKey: "name" },
@@ -140,9 +140,9 @@ export function Venta() {
             <Title>S/{total}</Title>
             <div className="flex gap-2 mt-5">
               <Button
-                isDisabled={!renderValidateaddInvoice()}
+                isDisabled={!validate}
                 onClick={() => {
-                  if (!renderValidateaddInvoice()) return;
+                  if (!validate) return;
                   addInvoiceMutate({
                     invoiceDetails: cart?.map((product) => {
                       return {

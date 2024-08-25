@@ -1,4 +1,4 @@
-import { Button, Icon, Modal, TextField, Title } from "@/components/atoms";
+import { Button, Icon, Loader, Modal, TextField, Title } from "@/components/atoms";
 import { DTOEditCategory, deleteCategory, updateCategory } from "@/services";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 export function ModalEditCategory(props: IModalCreateCategory) {
   const { refetch, closeModal, isModal, category } = props;
-  const [formData, setFormData] = useState<DTOEditCategory>(category);
+  const [formData, setFormData] = useState<DTOEditCategory>();
   const [isModalDelete, setIsModalDelete] = useState<boolean>(false);
 
   const { mutate: deleteCategoryMutate } = useMutation({
@@ -23,10 +23,10 @@ export function ModalEditCategory(props: IModalCreateCategory) {
     },
   });
 
-  const renderValidate = () => {
-    if (formData?.name) return true;
-    return false;
-  };
+  const validate = (() => {
+    if (!formData?.name) return false;
+    return true;
+  })();
 
   const { mutate: updateCategoryMutate } = useMutation({
     mutationFn: updateCategory,
@@ -41,6 +41,7 @@ export function ModalEditCategory(props: IModalCreateCategory) {
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!formData) return;
     const { name, value } = event.target;
     setFormData({
       ...formData,
@@ -50,7 +51,11 @@ export function ModalEditCategory(props: IModalCreateCategory) {
 
   useEffect(() => {
     setFormData({ id: category?.id, name: category?.name });
-  }, [category, isModal]);
+
+    return () => {
+      setFormData(undefined);
+    };
+  }, [category]);
 
   return (
     <>
@@ -59,12 +64,13 @@ export function ModalEditCategory(props: IModalCreateCategory) {
           <Title>Editar categoria</Title>
           <div>
             <p>Nombre</p>
-            <TextField error={formData?.name ? undefined : "requerido"} value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
+            <TextField error={!formData?.name ? "requerido" : undefined} value={formData?.name} onChange={handleChange} placeholder="nombre" isFull name="name" />
           </div>
           <div className="flex gap-2 items-center">
             <Button
-              isDisabled={!renderValidate()}
+              isDisabled={!validate}
               onClick={() => {
+                if (!formData) return;
                 updateCategoryMutate({ ...formData });
               }}
             >

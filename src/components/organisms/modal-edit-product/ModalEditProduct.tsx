@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 export function ModalEditProduct(props: IModalCreateCategory) {
   const { refetch, closeModal, isModal, product } = props;
-  const [formData, setFormData] = useState<DTOEditProduct>({ id: product?.id, stock: Number(product?.stock), price: Number(product?.price), name: product?.name });
+  const [formData, setFormData] = useState<DTOEditProduct>();
   const [isModalDelete, setIsModalDelete] = useState<boolean>(false);
   const [aument, setAument] = useState<number>();
 
@@ -26,11 +26,11 @@ export function ModalEditProduct(props: IModalCreateCategory) {
     },
   });
 
-  const renderValidate = () => {
+  const validate = (() => {
     if (!formData?.name || !formData?.price?.toString() || !formData?.stock?.toString()) return false;
     if (formData?.stock < 0 || formData?.price < 0) return false;
     return true;
-  };
+  })();
 
   const { mutate: updateProductMutate } = useMutation({
     mutationFn: updateProduct,
@@ -49,12 +49,15 @@ export function ModalEditProduct(props: IModalCreateCategory) {
     setFormData({
       ...formData,
       [name]: value,
-    });
+    } as DTOEditProduct);
   };
 
   useEffect(() => {
     setFormData({ id: product?.id, stock: Number(product?.stock), price: Number(product?.price), name: product?.name });
-  }, [product, isModal]);
+    return () => {
+      setFormData(undefined);
+    };
+  }, [product]);
 
   return (
     <>
@@ -91,8 +94,9 @@ export function ModalEditProduct(props: IModalCreateCategory) {
           </div>
           <div className="flex gap-2 items-center">
             <Button
-              isDisabled={!renderValidate()}
+              isDisabled={!validate}
               onClick={() => {
+                if (!formData) return;
                 updateProductMutate({ ...formData });
               }}
             >
@@ -108,6 +112,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
             <Button
               isDisabled={!aument || aument < 0}
               onClick={() => {
+                if (!formData) return;
                 updateProductMutate({ ...formData, stock: formData?.stock + (aument || 0) });
               }}
             >
@@ -116,6 +121,7 @@ export function ModalEditProduct(props: IModalCreateCategory) {
             <Button
               isDisabled={!aument || aument < 0}
               onClick={() => {
+                if (!formData) return;
                 updateProductMutate({ ...formData, stock: formData?.stock - (aument || 0) });
               }}
             >

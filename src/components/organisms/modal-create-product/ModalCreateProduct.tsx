@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export function ModalCreateProduct(props: IModalCreateProduct) {
   const { refetch, closeModal, isModal } = props;
-  const [formData, setFormData] = useState<DTOCreateProduct>({} as DTOCreateProduct);
+  const [formData, setFormData] = useState<DTOCreateProduct>();
   const { data: categories = [], isLoading } = useQuery({ queryKey: ["getAllCategories"], queryFn: () => getAllCategories({}), enabled: isModal });
   const { mutate: addProductMutate } = useMutation({
     mutationFn: addProduct,
@@ -22,7 +22,7 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
     },
   });
 
-  const renderValidate = () => {
+  const validate = (() => {
     if (!formData?.name || !formData?.price?.toString() || !formData?.stock?.toString()) {
       return false;
     }
@@ -31,19 +31,25 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
     }
 
     return true;
-  };
+  })();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    setFormData(
+      (prevFormData) =>
+        ({
+          ...prevFormData,
+          [name]: value,
+        } as DTOCreateProduct)
+    );
   };
 
   useEffect(() => {
-    setFormData({} as DTOCreateProduct);
-  }, [isModal]);
+    return () => {
+      setFormData(undefined);
+    };
+  }, []);
 
   return (
     <>
@@ -91,8 +97,9 @@ export function ModalCreateProduct(props: IModalCreateProduct) {
           </>
         )}
         <Button
-          isDisabled={!renderValidate()}
+          isDisabled={!validate}
           onClick={() => {
+            if (!formData) return;
             addProductMutate({ ...formData });
           }}
         >
