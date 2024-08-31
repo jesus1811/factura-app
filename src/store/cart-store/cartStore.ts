@@ -34,11 +34,6 @@ export const useCartStore = create(
           return { cart: [] };
         });
       },
-      loadStore: () => {
-        set(() => {
-          return { cart: JSON.parse(localStorage.getItem("CART") || "[]") };
-        });
-      },
       changeProduct: (productUpdate) => {
         set(({ cart }) => {
           const productsUpdate = cart?.map((product) => {

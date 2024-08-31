@@ -9,7 +9,7 @@ import axios from "axios";
 export function ModalInvoiceDetail(props: IModalInvoiceDetailProps) {
   const { closeModal, isModal, invoiceId } = props;
   const queryClient = useQueryClient();
-  const { data: invoiceDetails = [], isFetching } = useQuery({ queryKey: ["getInvoiceDetails", invoiceId], queryFn: () => getInvoiceDetails({ invoiceId: invoiceId }) });
+  const { data: invoiceDetails = [], isFetching } = useQuery({ queryKey: ["getInvoiceDetails", invoiceId], queryFn: () => getInvoiceDetails({ invoiceId: invoiceId }), enabled: isModal });
   const { mutate: deleteInvoiceMutate } = useMutation({
     mutationFn: deleteInvoice,
     onSuccess: () => {

@@ -1,38 +1,55 @@
 import { Button, Error, Icon, Loader, TextField } from "@/components/atoms";
-import { DataTable, IRows, Icolumns, ModalCreateCategory, ModalEditCategory } from "@/components/organisms";
+import { DataTable, IRows, Icolumns, ModalCreateCategory, ModalEditCategory, Pagination } from "@/components/organisms";
 import { Layout } from "@/components/templates";
-import { ICategory, IFilterCategory, getAllCategories } from "@/services";
+import { ICategory, IFilterCategory, getAllCategories, getAllCategoriesMinimal } from "@/services";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { ChangeEvent, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export function Categorias() {
-  const [isFilter, setisFilter] = useState<boolean>(false);
-  const [filter, setFilter] = useState<IFilterCategory>({} as IFilterCategory);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [debouncedText] = useDebounce(filter, 500);
+  const { replace, pathname, query } = useRouter();
+  const searchParams = useSearchParams();
+  const filter: IFilterCategory = { name: query?.name?.toString(), id: query?.id?.toString(), currentPage: Number(query?.currentPage || 1), totalPerPage: 8 };
   const [isModalCreate, setIsModalCreate] = useState<boolean>(false);
-  const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
-  const [category, setCategory] = useState<ICategory>();
+
   const {
     data: categories = [],
     isLoading,
     isSuccess,
     refetch: refetchCategories,
   } = useQuery({
-    queryKey: ["getAllCategories", currentPage, debouncedText],
-    queryFn: () => getAllCategories({ id: filter?.id, name: filter?.name, currentPage, totalPerPage: 8 }),
+    queryKey: ["getAllCategories", filter],
+    queryFn: () => getAllCategories(filter),
     placeholderData: keepPreviousData,
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = event.target;
-    setFilter({
-      ...filter,
-      [name]: value,
-    });
+  const { data: categoriesMinimal = [] } = useQuery({
+    queryKey: ["getAllCategoriesMinimal"],
+    queryFn: () => getAllCategoriesMinimal(),
+  });
+
+  const deleteFilterOnSeachId = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("name");
+    params.delete("currentPage");
+    replace(`${pathname}?${params?.toString()}`);
   };
+
+  const handleChange = useDebouncedCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    const params = new URLSearchParams(searchParams);
+
+    if (value === "") {
+      params.delete(name);
+      return replace(`${pathname}?${params.toString()}`);
+    }
+    params.set(name, value);
+    params.set("currentPage", "1");
+    replace(`${pathname}?${params.toString()}`);
+  }, 500);
 
   const columns: Icolumns[] = [
     { nameKey: "id", value: "Codigo" },
@@ -42,17 +59,7 @@ export function Categorias() {
 
   const rows: IRows[] = categories?.map((category) => ({
     ...category,
-    settings: (
-      <button
-        onClick={() => {
-          setCategory(category);
-          setIsModalEdit(true);
-        }}
-        className="ml-5"
-      >
-        <Icon variant="edit" className="!w-7" />
-      </button>
-    ),
+    settings: <RowCategory category={category} refetchCategories={refetchCategories} />,
   }));
 
   return (
@@ -66,79 +73,91 @@ export function Categorias() {
             Agregar
             <Icon variant="add" />
           </Button>
-          <Button
-            variant="outline"
-            onClick={() =>
-              setisFilter((prev) => {
-                if (prev) {
-                  setFilter({});
-                }
-                return !prev;
-              })
-            }
-          >
-            {isFilter ? "Cerrar filtros" : "Mostrar filtros"}
-          </Button>
         </div>
-        {isFilter && (
-          <div className="w-full overflow-x-auto overflow-y-hidden">
-            <div className="flex gap-2 items-end mt-6 w-[26.375rem]">
-              <div>
-                <p>Codigo</p>
-                <TextField
-                  value={filter?.id}
-                  name="id"
-                  onChange={(e) => {
-                    handleChange(e);
-                    setCurrentPage(1);
-                  }}
-                />
-              </div>
+        <div className="w-full overflow-x-auto overflow-y-hidden">
+          <div className="flex gap-2 items-end mt-6 w-[26.375rem]">
+            <div>
+              <p>Codigo</p>
+              <TextField
+                name="id"
+                type="text"
+                defaultValue={filter?.id}
+                onChange={(e) => {
+                  handleChange(e);
+                  deleteFilterOnSeachId();
+                }}
+              />
+            </div>
+            {!filter.id && (
               <div>
                 <p>Nombre</p>
                 <TextField
-                  value={filter?.name}
                   name="name"
+                  type="text"
+                  defaultValue={filter?.name}
                   list="products"
                   onChange={(e) => {
                     handleChange(e);
-                    setCurrentPage(1);
                   }}
                 />
                 <datalist id="products">
-                  {categories.map((product) => (
+                  {categoriesMinimal.map((product) => (
                     <option key={product?.id} value={product?.name}>
                       {product?.id}
                     </option>
                   ))}
                 </datalist>
               </div>
-            </div>
+            )}
           </div>
-        )}
+        </div>
         {isLoading && (
           <div className="mt-6">
             <Loader />
           </div>
         )}
+
         {!isLoading && !isSuccess && <Error />}
         {!isLoading && isSuccess && (
           <>
             <DataTable columns={columns} rows={rows} className="mt-6" />
-            <div className="flex gap-2 items-center w-full justify-end mt-5">
-              <Button isDisabled={currentPage <= 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-                <Icon variant="prev" />
-              </Button>
-              <p>Pagina {currentPage}</p>
-              <Button isDisabled={categories?.length === 0} onClick={() => setCurrentPage((prev) => prev + 1)}>
-                <Icon variant="next" />
-              </Button>
-            </div>
+            <Pagination
+              currentPage={filter?.currentPage || 1}
+              totalForPage={categories?.length}
+              onClickPrev={() => {
+                const params = new URLSearchParams(searchParams);
+                params.set("currentPage", ((filter?.currentPage || 1) - 1)?.toString());
+                replace(`${pathname}?${params?.toString()}`);
+              }}
+              onClickNext={() => {
+                const params = new URLSearchParams(searchParams);
+                params.set("currentPage", ((filter?.currentPage || 1) + 1)?.toString());
+                replace(`${pathname}?${params?.toString()}`);
+              }}
+            />
           </>
         )}
         {isModalCreate && <ModalCreateCategory isModal={isModalCreate} closeModal={() => setIsModalCreate(false)} refetch={refetchCategories} />}
-        {category && isModalEdit && <ModalEditCategory category={category} isModal={isModalEdit} closeModal={() => setIsModalEdit(false)} refetch={refetchCategories} />}
       </Layout>
+    </>
+  );
+}
+
+export function RowCategory(props: { category: ICategory; refetchCategories: () => void }) {
+  const { category, refetchCategories } = props;
+  const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          setIsModalEdit(true);
+        }}
+        className="ml-5"
+      >
+        <Icon variant="edit" className="!w-7" />
+      </button>
+      <ModalEditCategory category={category} isModal={isModalEdit} closeModal={() => setIsModalEdit(false)} refetch={refetchCategories} />
     </>
   );
 }

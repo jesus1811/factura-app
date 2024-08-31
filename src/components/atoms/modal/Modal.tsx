@@ -26,7 +26,7 @@ export function Modal(props: IModalProps) {
 
   if (!isModal) return null;
   return (
-    <section className="w-screen h-screen fixed bg-black bg-opacity-80 z-20 top-0 left-0 flex flex-col justify-center items-center">
+    <section className="w-screen h-screen fixed bg-black bg-opacity-50 z-20 top-0 left-0 flex flex-col justify-center items-center">
       <article
         ref={modalRef}
         className={classNames("relative", className)}

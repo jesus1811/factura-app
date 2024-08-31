@@ -14,7 +14,17 @@ export const getAllProducts = async (filter: IFilterProduct): Promise<IProduct[]
         totalPerPage,
       },
     });
-    if (response.status === 200 && response) return response.data as IProduct[];
+    if (response.status === 200 && response) return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllProductsMinimal = async (): Promise<{ name: string; id: string }[] | undefined> => {
+  const axiosInstance = getAxiosConfig();
+  try {
+    const response = await axiosInstance.get("/productMinimal");
+    if (response.status === 200 && response) return response.data;
   } catch (error) {
     throw error;
   }

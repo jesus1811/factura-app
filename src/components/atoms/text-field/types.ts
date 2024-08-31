@@ -1,6 +1,6 @@
-import { ChangeEventHandler, DetailedHTMLProps, HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
+import { ChangeEventHandler, HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
 
-export interface ITextFieldProps {
+export interface ITextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   isFull?: boolean;
   className?: string;

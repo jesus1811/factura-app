@@ -8,7 +8,17 @@ export const getAllCategories = async (filter: IFilterCategory): Promise<ICatego
     const response = await axiosInstance.get("/category", {
       params: { id, name, currentPage, totalPerPage },
     });
-    if (response.status === 200 && response) return response.data as ICategory[];
+    if (response.status === 200 && response) return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllCategoriesMinimal = async (): Promise<{ name: string; id: string }[] | undefined> => {
+  const axiosInstance = getAxiosConfig();
+  try {
+    const response = await axiosInstance.get("/categoryMinimal");
+    if (response.status === 200 && response) return response.data;
   } catch (error) {
     throw error;
   }
